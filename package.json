@@ -19,7 +19,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "portkill": "kill-port --port 3000",
-    "portkillstart": "kill-port --port 3000 & nest start"
+    "portkillstart": "kill-port --port 3000 & nest start",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "run-mig": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
+    "gen-mig": "npm run typeorm -- -d ./typeorm.config.ts migration:generate",
+    "create-mig": "npm run typeorm -- migration:create",
+    "revert-mig": "npm run typeorm -- -d ./typeorm.config.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

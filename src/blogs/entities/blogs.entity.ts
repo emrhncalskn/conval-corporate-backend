@@ -27,8 +27,8 @@ export class Blogs {
     featured: number;
     @Column()
     favorites: number;
-    @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn()
     created_at: Date;
-    @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn()
     updated_at: Date;
 }

@@ -5,12 +5,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { BlogsModule } from './blogs/blogs.module';
-import { SidebarsModule } from './sidebars/sidebars.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { SlidersModule } from './sliders/sliders.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { PermissionsModule } from './permissions/permissions.module';
+import { GeneralsModule } from './generals/generals.module';
 
 @Module({
   imports: [TypeOrmModule,
@@ -32,7 +33,7 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, SidebarsModule, PagesModule, AuthModule, SidebarsModule, SlidersModule],
+    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule],
   controllers: [AppController],
   providers: [AppService],
 })

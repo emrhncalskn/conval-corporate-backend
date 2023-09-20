@@ -19,7 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     async validate(username: string, password: string): Promise<any> {
         const user = await this.authService.validateUser(username, password);
         if (!user) {
-            throw new HttpException('Kullanıcı bulunamadı.', HttpStatus.NOT_FOUND)
+            throw new HttpException('Kullanıcı adı veya şifre hatalı!', HttpStatus.NOT_FOUND)
         }
         return user;
     }

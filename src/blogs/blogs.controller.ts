@@ -7,47 +7,54 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UploadPhotoDto } from 'src/users/dto/photo.dto';
 import { Functions } from 'services/functions/functions';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 
 const func = new Functions;
 
+@ApiBearerAuth()
 @ApiTags('Blogs')
+@UseGuards(PermissionGuard)
 @Controller('blogs')
 export class BlogsController {
   constructor(
     private readonly blogsService: BlogsService,
   ) { }
 
+  @Permission()
   @Get()
   async findAll() {
     return await this.blogsService.findAll();
   }
 
+  @Permission()
   @Get('get/:id')
   async findOne(@Param('id') id: number, @Res() res) {
     return await this.blogsService.findOne(id, res);
   }
 
-  @ApiBearerAuth()
+  @Permission(29)
   @UseGuards(JwtGuard)
   @Post('create')
   async create(@Body() data: CreateBlogDto, @Res() res, @Req() req) {
     return await this.blogsService.create(data, res, req.user.id);
   }
 
-  @ApiBearerAuth()
+  @Permission(30)
   @UseGuards(JwtGuard)
   @Post('update/:id')
   async update(@Param('id') id: number, @Body() data: CreateBlogDto, @Res() res) {
     return await this.blogsService.update(id, data, res);
   }
 
-  @ApiBearerAuth()
+  @Permission(31)
   @UseGuards(JwtGuard)
   @Post('delete/:id')
   async delete(@Param('id') id: number, @Res() res) {
     return await this.blogsService.delete(id, res);
   }
 
+  @Permission(32)
   @Post('upload/:id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({

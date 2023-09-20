@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('sidebars')
-export class Sidebars {
+@Entity('generals')
+export class Generals {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()

@@ -7,4 +7,5 @@ export class CreateSliderDto {
     stext: string;
     @ApiProperty()
     simg: string;
+    slug: string;
 }

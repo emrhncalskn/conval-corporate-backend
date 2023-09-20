@@ -5,6 +5,9 @@ import { Repository } from 'typeorm';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { Images } from 'src/users/entities/images.entity';
 import { UploadPhotoDto } from 'src/users/dto/photo.dto';
+import { Functions } from 'services/functions/functions';
+
+const func = new Functions;
 
 @Injectable()
 export class SlidersService {
@@ -28,6 +31,9 @@ export class SlidersService {
     }
 
     async create(res, data: CreateSliderDto) {
+        data.slug = String(await func.fillEmpty(data.stitle));
+        const isexist = await this.slidersRepository.findOne({ where: { slug: data.slug } });
+        if (isexist) { res.status(400).send({ message: "Bu slug zaten mevcut" }); return; }
         const newSlider = await this.slidersRepository.create(data);
         const check = await this.slidersRepository.save(newSlider);
         if (check) { res.status(201).send({ message: "Slider başarıyla oluşturuldu" }); return; }
@@ -35,11 +41,15 @@ export class SlidersService {
     }
 
     async setSlider(res, id: number, data: any) {
+        data.slug = String(await func.fillEmpty(data.stitle));
         const slider = await this.slidersRepository.findOne({ where: { id: id } });
+        const slug = await this.slidersRepository.findOne({ where: { slug: data.slug } });
+        if (slug) { res.status(400).send({ message: "Bu slug zaten mevcut", slug: slug.slug }); return; }
         if (slider) {
             slider.stitle = data.stitle;
             slider.stext = data.stext;
             slider.simg = data.simg;
+            slider.slug = data.slug;
             const check = await this.slidersRepository.save(slider);
             if (check) { res.status(201).send({ message: "Slider başarıyla güncellendi" }); return; }
             else { res.status(400).send({ message: "Slider güncellenemedi" }); return; }

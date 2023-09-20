@@ -29,17 +29,22 @@ export class BlogsService {
     }
 
     async create(data: CreateBlogDto, res, userid: number) {
+        data.slug = await func.fillEmpty(data.title);
+        const isexist = await this.blogsRepository.findOne({ where: { slug: data.slug } });
+        if (isexist) { return res.status(400).json({ message: 'Bu haber zaten mevcut.' }); }
         const blog = await this.blogsRepository.create(data);
+        blog.slug = data.slug;
         blog.author_id = userid;
-        blog.slug = await func.slugCreator(data.title);
         await this.blogsRepository.save(blog);
         return res.status(200).json(blog);
     }
 
     async update(blogid: number, data: CreateBlogDto, res) {
+        data.slug = await func.fillEmpty(data.title);
         const blog = await this.blogsRepository.findOne({ where: { id: blogid } });
+        const slug = await this.blogsRepository.findOne({ where: { slug: data.slug } });
+        if (slug) { return res.status(400).json({ message: 'Bu haber zaten mevcut.', slug: slug.slug }); }
         if (!blog) { return res.status(404).json({ message: 'Böyle bir haber yok!' }); }
-        data.slug = await func.slugCreator(data.title);
         await this.blogsRepository.update({ id: blogid }, data);
         return res.status(200).json({ message: 'Haber güncellendi.' });
     }

@@ -1,60 +1,66 @@
 import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { SidebarsService } from './sidebars.service';
+import { GeneralsService } from '../generals/generals.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateSidebarDto } from './dto/create-sidebar.dto';
+import { CreateGeneralDto } from './dto/create-general.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UploadPhotoDto } from 'src/users/dto/photo.dto';
 import { Functions } from 'services/functions/functions';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
 
 const func = new Functions;
 
-@ApiTags('Sidebars')
-@Controller('sidebars')
-export class SidebarsController {
+@ApiBearerAuth()
+@ApiTags('Generals')
+@UseGuards(PermissionGuard)
+@Controller('generals')
+export class GeneralsController {
   constructor(
-    private sidebarsService: SidebarsService,
+    private generalsService: GeneralsService,
   ) { }
 
+  @Permission()
   @Get()
   async findAll(@Res() res) {
-    return await this.sidebarsService.findAll(res);
+    return await this.generalsService.findAll(res);
   }
 
+  @Permission()
   @Get('get/:id')
   async findOne(@Res() res, @Param('id') id: number) {
-    return await this.sidebarsService.findOne(res, id);
+    return await this.generalsService.findOne(res, id);
   }
 
-  @ApiBearerAuth()
+  @Permission(20)
   @UseGuards(JwtGuard)
   @Post('create')
-  async create(@Body() data: CreateSidebarDto, @Req() req, @Res() res) {
-    return await this.sidebarsService.create(data, req.user.id, res);
+  async create(@Body() data: CreateGeneralDto, @Res() res) {
+    return await this.generalsService.create(data, res);
   }
 
-  @ApiBearerAuth()
+  @Permission(21)
   @UseGuards(JwtGuard)
   @Post('update/:id')
-  async update(@Param('id') id: number, @Body() data: CreateSidebarDto, @Req() req, @Res() res) {
-    return await this.sidebarsService.update(id, data, req.user.id, res);
+  async update(@Param('id') id: number, @Body() data: CreateGeneralDto, @Req() req, @Res() res) {
+    return await this.generalsService.update(id, data, res);
   }
 
-  @ApiBearerAuth()
+  @Permission(22)
   @UseGuards(JwtGuard)
   @Post('delete/:id')
   async delete(@Param('id') id: number, @Req() req, @Res() res) {
-    return await this.sidebarsService.delete(id, req.user.id, res);
+    return await this.generalsService.delete(id, res);
   }
 
-  @ApiBearerAuth()
+  @Permission(23)
   @UseGuards(JwtGuard)
   @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
   @Post('upload/:id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
-      destination: './assets/images/uploads/sidebars/',
+      destination: './assets/images/uploads/generals/',
       filename: (req, file, cb) => { //cb = callback
         const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
         return cb(null, `${randomName}` + '.' + `${file.mimetype.split('/')[1]}`)
@@ -71,7 +77,7 @@ export class SidebarsController {
     photo.iurl = file.path
     photo.ialt = await func.fillEmpty(file.originalname)
     if (file.size > 1000000) { return 'Boyutu çok büyük! Max: (10MB)' }
-    return this.sidebarsService.uploadPhoto(photo, id)
+    return this.generalsService.uploadPhoto(photo, id)
   }
 
 }

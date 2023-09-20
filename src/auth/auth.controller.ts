@@ -25,12 +25,15 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'Yeni kullanıcı oluşturur. (Register İşlemi)' })
     @Post('register')
     async register(@Res() res, @Body() data: CreateUserDto) {
-        const usercheck = await this.usersService.findOneWithUserName(data.email);
-        if (usercheck) {
-            res.status(400).send({ message: 'Bu mail adresi ile kayıt olunmuş' });
-        }
-        await this.usersService.create(data);
-        res.status(201).send({ message: 'Kayıt başarılı' });
+        const emailcheck = await this.usersService.findOneWithEmail(data.email);
+        const usercheck = await this.usersService.findOneWithUserName(data.username);
+        let msg = '';
+
+        emailcheck ? msg = 'Bu email ile kayıt olunmuş' :
+            usercheck ? msg = 'Bu kullanıcı adı ile kayıt olunmuş' :
+                (msg = 'Kayıt başarılı', await this.usersService.create(data));
+
+        return res.status(201).send({ message: msg });
     }
 }
 

@@ -20,8 +20,8 @@ export class Users extends BaseEntity {
     img: string;
     @Column({ nullable: true })
     img_type: string;
-    @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn()
     created_at: Date;
-    @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn()
     updated_at: Date;
 }

@@ -12,6 +12,7 @@ import { UploadPhotoDto } from 'src/users/dto/photo.dto';
 
 const func = new Functions;
 
+@ApiBearerAuth()
 @ApiTags('Pages')
 @UseGuards(PermissionGuard)
 @Controller('pages')
@@ -32,8 +33,7 @@ export class PagesController {
         return await this.pagesService.findBySlug(res, slug);
     }
 
-    @Permission(42)
-    @ApiBearerAuth()
+    @Permission(24)
     @UseGuards(JwtGuard)
     @Get('get/:id')
     async findOne(@Res() res, @Param('id') id: number) {
@@ -41,32 +41,28 @@ export class PagesController {
     }
 
 
-    @Permission(29)
-    @ApiBearerAuth()
+    @Permission(25)
     @UseGuards(JwtGuard)
     @Post('create')
     async create(@Body() data: CreatePageDto, @Req() req, @Res() res) {
         return await this.pagesService.create(data, req.user.id, res);
     }
 
-    @Permission(30)
-    @ApiBearerAuth()
+    @Permission(26)
     @UseGuards(JwtGuard)
     @Post('update/:id')
     async update(@Param('id') id: number, @Body() data: CreatePageDto, @Req() req, @Res() res) {
         return await this.pagesService.update(id, data, req.user.id, res);
     }
 
-    @Permission(31)
-    @ApiBearerAuth()
+    @Permission(27)
     @UseGuards(JwtGuard)
     @Post('delete/:id')
     async delete(@Param('id') id: number, @Req() req, @Res() res) {
         return await this.pagesService.delete(id, req.user.id, res);
     }
 
-    @Permission(37)
-    @ApiBearerAuth()
+    @Permission(28)
     @UseGuards(JwtGuard)
     @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
     @Post('upload/:id')

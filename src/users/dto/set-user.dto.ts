@@ -14,3 +14,8 @@ export class SetUserDto {
     @ApiProperty()
     img: string;
 }
+
+export class SetUserRoleDto {
+    @ApiProperty()
+    roleid: number;
+}
