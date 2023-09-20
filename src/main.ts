@@ -1,8 +1,40 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
+
+  //.env dosyası import işlemi
+  dotenv.config();
+
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  // Swagger tanımlarını oluştur
+  const config = new DocumentBuilder()
+    .setTitle('Conval Corporate API')
+    .setDescription('API for managing Conval Corporate')
+    .setVersion('3.1')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  //-------
+
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3006',
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  });
+
+  //------------
+
+  await app.listen(3006);
+
 }
 bootstrap();

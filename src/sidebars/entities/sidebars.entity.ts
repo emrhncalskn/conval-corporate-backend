@@ -1,17 +1,15 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('images')
-export class Images {
+@Entity('sidebars')
+export class Sidebars {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
-    iname: string;
+    title: string;
     @Column()
-    itype: string;
-    @Column()
-    iurl: string;
-    @Column()
-    ialt: string;
+    description: string;
+    @Column({ nullable: true })
+    img: string;
     @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
     @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

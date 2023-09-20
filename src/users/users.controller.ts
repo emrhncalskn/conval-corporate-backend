@@ -6,10 +6,12 @@ import { UsersService } from './users.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UploadPhotoDto } from './dto/photo.dto';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 
 const func = new Functions;
 
 @ApiBearerAuth()
+@UseGuards(JwtGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {

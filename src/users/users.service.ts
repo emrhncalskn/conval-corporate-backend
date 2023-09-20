@@ -70,7 +70,7 @@ export class UsersService {
     async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
         const photo = this.imagesRepository.create(photoDto);
         await this.imagesRepository.save(photo);
-        await this.userRepository.update({ id: uid }, { img: photo.iname });
+        await this.userRepository.update({ id: uid }, { img: `/users/${photo.iname}` });
         return `/users/${photo.iname}`;
     }
 }

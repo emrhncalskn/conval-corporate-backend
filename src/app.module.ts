@@ -4,6 +4,13 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
+import { BlogsModule } from './blogs/blogs.module';
+import { SidebarsModule } from './sidebars/sidebars.module';
+import { PagesModule } from './pages/pages.module';
+import { AuthModule } from './auth/auth.module';
+import { SlidersModule } from './sliders/sliders.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [TypeOrmModule,
@@ -22,7 +29,10 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
 
     }),
-    UsersModule,],
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'assets/images/uploads'),
+    }),
+    UsersModule, BlogsModule, SidebarsModule, PagesModule, AuthModule, SidebarsModule, SlidersModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,17 +1,32 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('images')
-export class Images {
+@Entity('blogs')
+export class Blogs {
+
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
-    iname: string;
+    author_id: number;
     @Column()
-    itype: string;
+    title: string;
     @Column()
-    iurl: string;
+    excerpt: string;
     @Column()
-    ialt: string;
+    body: string;
+    @Column({ nullable: true })
+    img: string;
+    @Column()
+    slug: string;
+    @Column()
+    meta_description: string;
+    @Column()
+    meta_keywords: string;
+    @Column()
+    status: number;
+    @Column()
+    featured: number;
+    @Column()
+    favorites: number;
     @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
     @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

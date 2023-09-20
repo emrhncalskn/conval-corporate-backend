@@ -9,11 +9,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local-strategy';
 import { JwtStrategy } from './strategies/jwt-strategy';
+import { Images } from 'src/users/entities/images.entity';
 
 @Module({
   imports: [
     UsersModule,
-    TypeOrmModule.forFeature([Users]),
+    TypeOrmModule.forFeature([Users, Images]),
     JwtModule.register(
       {
         secret: 'c0nv4lc0rp0r4t3', // JWT için gizli anahtar

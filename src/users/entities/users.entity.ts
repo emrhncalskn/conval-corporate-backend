@@ -1,4 +1,4 @@
-import { Entity, Column, DeleteDateColumn, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, BaseEntity, } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -16,12 +16,12 @@ export class Users extends BaseEntity {
     password: string;
     @Column()
     user_role: number;
-    @Column()
+    @Column({ nullable: true })
     img: string;
-    @Column()
+    @Column({ nullable: true })
     img_type: string;
-    @CreateDateColumn({ type: 'datetime' })
+    @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
-    @UpdateDateColumn({ type: 'datetime' })
+    @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 }
