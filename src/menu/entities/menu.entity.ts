@@ -8,14 +8,14 @@ export class Menu {
     @Column()
     title: string;
     @Column()
-    type_id: string;
+    type_id: number;
     @Column()
     slug: string;
     @Column({ nullable: true })
     menu_belong: number; //sub-menu
     @Column({ type: 'text', nullable: true })
     route: string;
-    @Column()
+    @Column({ default: 0 })
     status: number;
     @CreateDateColumn()
     created_at: Date;
