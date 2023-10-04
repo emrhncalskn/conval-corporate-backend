@@ -12,6 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { PermissionsModule } from './permissions/permissions.module';
 import { GeneralsModule } from './generals/generals.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [TypeOrmModule,
@@ -33,7 +34,7 @@ import { GeneralsModule } from './generals/generals.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule],
+    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule],
   controllers: [AppController],
   providers: [AppService],
 })
