@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { MenuService } from './menu.service';
-import { MenuDto } from './dto/menu.dto';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 
 @Controller('menu')
 @UseGuards(PermissionGuard)
@@ -36,7 +36,8 @@ export class MenuController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Post('create')
-  async createMenu(@Body() data: MenuDto, @Res() res) {
+  async createMenu(@Body() data: CreateMenuDto, @Res() res) {
+    console.log('agubugu')
     return await this.menuService.createMenu(data, res);
   }
 
@@ -44,7 +45,7 @@ export class MenuController {
   @Permission(40)
   @UseGuards(JwtGuard)
   @Post('set/:id')
-  async setMenu(@Body() data: MenuDto, @Param('id') id: number, @Res() res) {
+  async setMenu(@Body() data: UpdateMenuDto, @Param('id') id: number, @Res() res) {
     return await this.menuService.setMenu(data, id, res);
   }
 

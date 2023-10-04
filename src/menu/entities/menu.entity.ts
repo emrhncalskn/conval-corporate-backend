@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { MenuType } from "./menu_type.entity";
 
 @Entity('menu')
@@ -7,7 +7,7 @@ export class Menu {
     id: number;
     @Column()
     title: string;
-    @Column()
+    @Column({ default: 1 })
     type_id: number;
     @Column()
     slug: string;
@@ -22,12 +22,14 @@ export class Menu {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => MenuType, menutype => menutype.menu)
+    @ManyToOne(() => MenuType, menutype => menutype.menu, { cascade: true })
     @JoinColumn({ name: 'type_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_menu_type_id' })
     menutype: MenuType;
 
-    @OneToOne(() => Menu)
-    @JoinColumn({ name: 'menu_belong', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_menu_belong' })
-    menu: Menu;
+    @OneToMany(() => Menu, menu => menu.menu_belong_id)
+    menu: Menu[];
 
+    @ManyToOne(() => Menu, menu_belong_id => menu_belong_id.menu, { cascade: true })
+    @JoinColumn({ name: 'menu_belong', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_menu_belong' })
+    menu_belong_id: Menu;
 }
