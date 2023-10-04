@@ -32,9 +32,9 @@ export class MenuController {
     return await this.menuService.getMenus();
   }
 
-  @ApiBearerAuth()
   @Permission(39)
   @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @Post('create')
   async createMenu(@Body() data: MenuDto, @Res() res) {
     return await this.menuService.createMenu(data, res);

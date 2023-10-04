@@ -24,6 +24,8 @@ export class PermissionGuard {
   async canActivate(context: ExecutionContext) {
     const key = this.reflector.get<number[]>('permission_key', context.getHandler());
     if (isNaN(key[0])) { return true; } //her kullanıcı ulaşabilir
+    const check = context.switchToHttp().getRequest().headers.authorization;
+    if (key === undefined || check === undefined) { throw new HttpException("Önce giriş yapınız.", HttpStatus.BAD_REQUEST); }
     const request = context.switchToHttp().getRequest();
     const jwt = request.headers.authorization.replace('Bearer ', '');
     const uid = this.jwtService.decode(jwt);
