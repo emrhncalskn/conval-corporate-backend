@@ -13,7 +13,6 @@ import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 
 const func = new Functions;
 
-@ApiBearerAuth()
 @ApiTags('Sliders')
 @Controller('sliders')
 @UseGuards(PermissionGuard)
@@ -35,6 +34,7 @@ export class SlidersController {
     }
 
     @Permission(16)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('create')
     async create(@Res() res, @Body() data: CreateSliderDto) {
@@ -42,6 +42,7 @@ export class SlidersController {
     }
 
     @Permission(17)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('set/:id')
     async setSlider(@Res() res, @Param('id') id: number, @Body() data: SetSliderDto) {
@@ -49,6 +50,7 @@ export class SlidersController {
     }
 
     @Permission(18)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('del/:id')
     async delSlider(@Res() res, @Param('id') id: number) {
@@ -56,6 +58,8 @@ export class SlidersController {
     }
 
     @Permission(19)
+    @ApiBearerAuth()
+    @UseGuards(JwtGuard)
     @Post('upload/:id')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({

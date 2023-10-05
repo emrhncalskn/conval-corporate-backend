@@ -12,7 +12,6 @@ import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 
 const func = new Functions;
 
-@ApiBearerAuth()
 @ApiTags('Blogs')
 @UseGuards(PermissionGuard)
 @Controller('blogs')
@@ -34,6 +33,7 @@ export class BlogsController {
   }
 
   @Permission(29)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('create')
   async create(@Body() data: CreateBlogDto, @Res() res, @Req() req) {
@@ -41,6 +41,7 @@ export class BlogsController {
   }
 
   @Permission(30)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('update/:id')
   async update(@Param('id') id: number, @Body() data: CreateBlogDto, @Res() res) {
@@ -48,6 +49,7 @@ export class BlogsController {
   }
 
   @Permission(31)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('delete/:id')
   async delete(@Param('id') id: number, @Res() res) {
@@ -55,6 +57,8 @@ export class BlogsController {
   }
 
   @Permission(32)
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Post('upload/:id')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({

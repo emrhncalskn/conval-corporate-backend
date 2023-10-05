@@ -12,7 +12,6 @@ import { UploadPhotoDto } from 'src/users/dto/photo.dto';
 
 const func = new Functions;
 
-@ApiBearerAuth()
 @ApiTags('Pages')
 @UseGuards(PermissionGuard)
 @Controller('pages')
@@ -34,6 +33,7 @@ export class PagesController {
     }
 
     @Permission(24)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Get('get/:id')
     async findOne(@Res() res, @Param('id') id: number) {
@@ -42,6 +42,7 @@ export class PagesController {
 
 
     @Permission(25)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('create')
     async create(@Body() data: CreatePageDto, @Req() req, @Res() res) {
@@ -49,6 +50,7 @@ export class PagesController {
     }
 
     @Permission(26)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('update/:id')
     async update(@Param('id') id: number, @Body() data: CreatePageDto, @Req() req, @Res() res) {
@@ -56,6 +58,7 @@ export class PagesController {
     }
 
     @Permission(27)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('delete/:id')
     async delete(@Param('id') id: number, @Req() req, @Res() res) {
@@ -63,6 +66,7 @@ export class PagesController {
     }
 
     @Permission(28)
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
     @Post('upload/:id')
