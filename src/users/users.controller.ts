@@ -1,5 +1,5 @@
 import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Functions } from 'services/functions/functions';
 import { SetUserDto, SetUserRoleDto } from './dto/set-user.dto';
 import { UsersService } from './users.service';
@@ -55,6 +55,18 @@ export class UsersController {
 
     @Permission(15)
     @Post('upload/:id')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './assets/images/uploads/users/',

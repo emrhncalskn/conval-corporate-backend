@@ -1,7 +1,7 @@
 import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
@@ -70,6 +70,18 @@ export class PagesController {
     @UseGuards(JwtGuard)
     @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
     @Post('upload/:id')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './assets/images/uploads/pages/',

@@ -1,6 +1,6 @@
 import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { Functions } from 'services/functions/functions';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -61,6 +61,18 @@ export class SlidersController {
     @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('upload/:id')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './assets/images/uploads/sliders/',
