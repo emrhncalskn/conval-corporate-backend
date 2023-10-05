@@ -30,6 +30,12 @@ export class GeneralsService {
         return res.status(200).send(general);
     }
 
+    async findBySlug(res, slug: string) {
+        const general = await this.generalsRepository.findOne({ where: { slug: slug } });
+        if (!general) { return res.status(400).send({ message: 'General bulunamadı.' }) }
+        return res.status(200).send(general);
+    }
+
     async create(data: GeneralDto, res) {
         const general = await this.generalsRepository.create(data);
         if (!data.slug) { general.slug = await func.fillEmpty(data.title) }

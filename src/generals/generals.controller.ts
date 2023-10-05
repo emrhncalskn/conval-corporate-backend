@@ -32,6 +32,12 @@ export class GeneralsController {
     return await this.generalsService.findOne(res, id);
   }
 
+  @Permission()
+  @Get('getbyslug/:slug')
+  async findBySlug(@Res() res, @Param('slug') slug: string) {
+    return await this.generalsService.findBySlug(res, slug);
+  }
+
   @Permission(20)
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
