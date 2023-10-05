@@ -8,6 +8,8 @@ export class Generals {
     title: string;
     @Column()
     description: string;
+    @Column()
+    slug: string;
     @Column({ nullable: true })
     img: string;
     @Column({ type: 'text', nullable: true })

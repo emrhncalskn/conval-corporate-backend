@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateGeneralDto } from './dto/create-general.dto';
+import { GeneralDto } from './dto/general.dto';
 import { Images } from 'src/users/entities/images.entity';
 import { UploadPhotoDto } from 'src/users/dto/photo.dto';
 import { Generals } from './entities/generals.entity';
+import { Functions } from 'services/functions/functions';
+
+const func = new Functions;
 
 @Injectable()
 export class GeneralsService {
@@ -27,16 +30,18 @@ export class GeneralsService {
         return res.status(200).send(general);
     }
 
-    async create(data: CreateGeneralDto, res) {
+    async create(data: GeneralDto, res) {
         const general = await this.generalsRepository.create(data);
+        if (!data.slug) { general.slug = await func.fillEmpty(data.title) }
         await this.generalsRepository.save(general);
         if (!general) { return res.status(400).send({ message: 'General oluşturulamadı.' }) }
         return res.status(200).send({ message: 'General oluşturuldu.', general: general });
     }
 
-    async update(generalid: number, data: CreateGeneralDto, res) {
+    async update(generalid: number, data: GeneralDto, res) {
         const general = await this.generalsRepository.findOne({ where: { id: generalid } });
         if (!general) { return res.status(400).send({ message: 'General bulunamadı.' }) }
+        if (!data.slug) { general.slug = await func.fillEmpty(data.title) }
         await this.generalsRepository.update({ id: generalid }, data);
         return res.status(200).send({ message: 'General güncellendi.' });
     }

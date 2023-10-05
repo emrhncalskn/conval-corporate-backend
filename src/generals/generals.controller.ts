@@ -1,7 +1,7 @@
 import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { GeneralsService } from '../generals/generals.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateGeneralDto } from './dto/create-general.dto';
+import { GeneralDto } from './dto/general.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -12,7 +12,6 @@ import { Permission } from 'src/permissions/decorators/permission.decorator';
 
 const func = new Functions;
 
-@ApiBearerAuth()
 @ApiTags('Generals')
 @UseGuards(PermissionGuard)
 @Controller('generals')
@@ -34,20 +33,23 @@ export class GeneralsController {
   }
 
   @Permission(20)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('create')
-  async create(@Body() data: CreateGeneralDto, @Res() res) {
+  async create(@Body() data: GeneralDto, @Res() res) {
     return await this.generalsService.create(data, res);
   }
 
   @Permission(21)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('update/:id')
-  async update(@Param('id') id: number, @Body() data: CreateGeneralDto, @Req() req, @Res() res) {
+  async update(@Param('id') id: number, @Body() data: GeneralDto, @Req() req, @Res() res) {
     return await this.generalsService.update(id, data, res);
   }
 
   @Permission(22)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post('delete/:id')
   async delete(@Param('id') id: number, @Req() req, @Res() res) {
@@ -55,6 +57,7 @@ export class GeneralsController {
   }
 
   @Permission(23)
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
   @Post('upload/:id')
