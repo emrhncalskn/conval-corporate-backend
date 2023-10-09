@@ -4,7 +4,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 
 async function bootstrap() {
-
   //.env dosyası import işlemi
   dotenv.config();
 
@@ -27,14 +26,16 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3006',
+      'http://192.168.1.100:3000',
+      'http://192.168.1.100:4006',
+      'https://conval.labconnect.me',
     ],
-    methods: ["GET", "POST"],
+    methods: ['GET', 'POST'],
     credentials: true,
   });
 
   //------------
 
   await app.listen(3006);
-
 }
 bootstrap();
