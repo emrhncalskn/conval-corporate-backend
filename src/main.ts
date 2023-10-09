@@ -25,10 +25,11 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'http://localhost:3006',
+      'http://localhost:4006',
       'http://192.168.1.100:3000',
       'http://192.168.1.100:4006',
       'https://conval.labconnect.me',
+      'https://conval-test.cosmostest.tech/',
     ],
     methods: ['GET', 'POST'],
     credentials: true,
