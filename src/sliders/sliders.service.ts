@@ -41,21 +41,19 @@ export class SlidersService {
         else { res.status(400).json({ message: "Slider oluşturulamadı" }); return; }
     }
 
-    async setSlider(res, id: number, data: any) {
+    async setSlider(res : Response, id: number, data: any) {
         data.slug = String(await func.fillEmpty(data.stitle));
         const slider = await this.slidersRepository.findOne({ where: { id: id } });
-        const slug = await this.slidersRepository.findOne({ where: { slug: data.slug } });
-        if (slug) { res.status(400).send({ message: "Bu slug zaten mevcut", slug: slug.slug }); return; }
         if (slider) {
             slider.stitle = data.stitle;
             slider.stext = data.stext;
             slider.simg = data.simg;
             slider.slug = data.slug;
             const check = await this.slidersRepository.save(slider);
-            if (check) { res.status(201).send({ message: "Slider başarıyla güncellendi" }); return; }
-            else { res.status(400).send({ message: "Slider güncellenemedi" }); return; }
+            if (check) { res.status(201).json({ message: "Slider başarıyla güncellendi" }); return; }
+            else { res.status(400).json({ message: "Slider güncellenemedi" }); return; }
         }
-        else { res.status(400).send({ message: "Slider bulunamadı" }); return; }
+        else { res.status(400).json({ message: "Slider bulunamadı" }); return; }
     }
 
     async delSlider(res, id: number) {
