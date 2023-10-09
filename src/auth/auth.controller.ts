@@ -19,7 +19,6 @@ export class AuthController {
     @Post('login')
     async login(@Body() authDto: AuthDto, @Request() req) {
         return await this.authService.login(req.user.id);
-
     }
 
     @ApiResponse({ status: 200, description: 'Yeni kullanıcı oluşturur. (Register İşlemi)' })

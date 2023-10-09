@@ -29,7 +29,8 @@ async function bootstrap() {
       'http://192.168.1.100:3000',
       'http://192.168.1.100:4006',
       'https://conval.labconnect.me',
-      'https://conval-test.cosmostest.tech/',
+      'https://conval-test.cosmostest.tech',
+      'https://conval-test.cosmostest.tech:4006'
     ],
     methods: ['GET', 'POST'],
     credentials: true,
