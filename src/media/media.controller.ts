@@ -7,16 +7,19 @@ import { UploadPhotoDto } from './dto/photo.dto';
 import { MediaService } from './media.service';
 import { FileTypeConstant } from 'constants/filetype.constant';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
 
 const func = new Functions;
 
 @ApiBearerAuth()
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, PermissionGuard)
 @Controller('media')
 @ApiTags('Media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) { }
 
+  @Permission()
   @Post('upload/:route')
   @ApiConsumes('multipart/form-data')
   @ApiBody({

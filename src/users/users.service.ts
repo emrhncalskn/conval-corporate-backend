@@ -62,18 +62,13 @@ export class UsersService {
 
     async setUser(data: SetUserDto, res, uid: number) {
         const user = await this.userRepository.findOne({ where: { id: uid } });
-        if (user) {
-            if (data.username == '' || data.password == '' || data.email == '') { res.status(400).send({ message: "Kullanıcı adı, Şifre ya da Email boş değer olamaz." }); return; }
-            user.firstname = data.firstname;
-            user.lastname = data.lastname;
-            user.username = data.username;
-            user.email = data.email;
-            user.password = await encrypt.hashPassword(data.password);
-            user.img = data.img;
-            await this.userRepository.save(user);
-            res.status(200).send({ message: "Kullanıcı bilgileri güncellendi." });
-        }
-        else { res.status(400).send({ message: "Kullanıcı bilgileri güncellenemedi" }); }
+        if (!user) { return res.send({ status: 404, message: `ID: [${uid}] kullanıcı bulunamadı.` }); }
+        Object.assign(user, data);
+        if (data.password) { data.password = await encrypt.hashPassword(data.password); }
+        const set = await this.userRepository.update({ id: uid }, data);
+        if (set.affected < 1) { return res.send('Kullanıcı düzenleme işlemi sırasında bir hata oluştu.') }
+        const { password, ...result } = user;
+        return await res.send({ status: 200, message: `Kullanıcı düzenlendi.`, user: result });
     }
 
     async getRegisterRequests() {
