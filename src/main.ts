@@ -3,13 +3,16 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 import { request } from 'express';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
   //.env dosyası import işlemi
   dotenv.config();
 
-  const app = await NestFactory.create(AppModule);
-
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+  );
   // Swagger tanımlarını oluştur
   const config = new DocumentBuilder()
     .setTitle('Conval Corporate API')
@@ -39,8 +42,10 @@ async function bootstrap() {
   });
 
   //------------
+  app.setBaseViewsDir(join(__dirname, '..', '../views'));
+  app.setViewEngine('hbs');
 
   const listener = await app.listen(3006);
-  console.log(`Uygulama ':${listener.address().port}' portunda çalışıyor.`);
+  console.log(`Uygulama ':${await app.getUrl()}' adresinde çalışıyor.`);
 }
 bootstrap();
