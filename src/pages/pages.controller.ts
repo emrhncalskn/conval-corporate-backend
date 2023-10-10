@@ -6,6 +6,7 @@ import { Permission } from 'src/permissions/decorators/permission.decorator';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { CreatePageDto } from './dto/create-page.dto';
 import { PagesService } from './pages.service';
+import { PageExtraDto } from './dto/create-page-extra.dto';
 
 const func = new Functions;
 
@@ -62,4 +63,47 @@ export class PagesController {
         return await this.pagesService.delete(id, req.user.id, res);
     }
 
+    @Permission()
+    @Get('extra/getall')
+    async getAllExtra(@Res() res) {
+        return await this.pagesService.findAllExtra(res);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtGuard)
+    @Permission()
+    @Get('extra/get/:id')
+    async getExtra(@Param('id') id: number, @Res() res) {
+        return await this.pagesService.findOneExtra(res, id);
+    }
+
+    @Permission()
+    @Get('extra/getbyslug/:slug')
+    async getExtraBySlug(@Param('slug') slug: string, @Res() res) {
+        return await this.pagesService.findBySlugExtra(res, slug);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtGuard)
+    @Permission()
+    @Post('extra/create')
+    async createExtra(@Body() data: PageExtraDto, @Req() req, @Res() res) {
+        return await this.pagesService.createExtra(data, req.user.id, res);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtGuard)
+    @Permission()
+    @Post('extra/update/:id')
+    async updateExtra(@Param('id') id: number, @Body() data: PageExtraDto, @Req() req, @Res() res) {
+        return await this.pagesService.updateExtra(id, data, req.user.id, res);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtGuard)
+    @Permission()
+    @Post('extra/delete/:id')
+    async deleteExtra(@Param('id') id: number, @Res() res) {
+        return await this.pagesService.deleteExtra(id, res);
+    }
 }
