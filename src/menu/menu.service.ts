@@ -27,8 +27,7 @@ export class MenuService {
     }
 
     async createMenu(data: CreateMenuDto, res) {
-        data.slug = await func.fillEmpty(data.title)
-        console.log(data)
+        data.slug = await func.fillEmpty(data.title);
         const isexist = await this.menuRepository.findOne({ where: { slug: data.slug } });
         if (isexist) { return res.status(400).send('Bu menü zaten mevcut.') }
         const newMenu = await this.menuRepository.create(data);
@@ -38,16 +37,18 @@ export class MenuService {
     }
 
     async setMenu(data: UpdateMenuDto, id: number, res) {
-        const isexist = await this.menuRepository.findOne({ where: { id: id } });
-        if (!isexist) { return res.status(400).send('Menü bulunamadı.') }
+        const menu = await this.menuRepository.findOne({ where: { id: id } });
+        if (!menu) { return res.status(400).send('Menü bulunamadı.') }
+        Object.assign(menu, data)
         const check = await this.menuRepository.update(id, data);
         if (!check) { return res.status(400).send('Menü güncellenirken hata oluştu.') }
         return res.status(200).send('Menü başarıyla güncellendi.')
     }
 
     async deleteMenu(id: number, res) {
-        const isexist = await this.menuRepository.findOne({ where: { id: id } });
-        if (!isexist) { return res.status(400).send('Menü bulunamadı.') }
+        const menu = await this.menuRepository.findOne({ where: { id: id } });
+        if (!menu) { return res.status(400).send('Menü bulunamadı.') }
+        if (menu.menu_belong) { return res.status(400).send('Bu menüye ait alt menüler var. Önce onları silmelisiniz.') }
         const check = await this.menuRepository.delete(id);
         if (!check) { return res.status(400).send('Menü silinirken hata oluştu.') }
         return res.status(200).send('Menü başarıyla silindi.')

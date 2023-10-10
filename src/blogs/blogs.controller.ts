@@ -1,14 +1,11 @@
-import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { BlogsService } from './blogs.service';
-import { CreateBlogDto } from './dto/blog.dto';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { UploadPhotoDto } from 'src/users/dto/photo.dto';
+import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Functions } from 'services/functions/functions';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { BlogsService } from './blogs.service';
+import { CreateBlogDto } from './dto/blog.dto';
 
 const func = new Functions;
 

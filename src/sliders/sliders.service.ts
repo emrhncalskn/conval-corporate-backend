@@ -3,10 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Sliders } from './entities/sliders.entity';
 import { Repository } from 'typeorm';
 import { CreateSliderDto } from './dto/create-slider.dto';
-import { Images } from 'src/users/entities/images.entity';
-import { UploadPhotoDto } from 'src/users/dto/photo.dto';
+import { Images } from 'src/media/entities/images.entity';
+import { UploadPhotoDto } from 'src/media/dto/photo.dto';
 import { Functions } from 'services/functions/functions';
 import { Response } from 'express';
+import { SetSliderDto } from './dto/slider.dto';
 
 const func = new Functions;
 
@@ -41,29 +42,26 @@ export class SlidersService {
         else { res.status(400).json({ message: "Slider oluşturulamadı" }); return; }
     }
 
-    async setSlider(res: Response, id: number, data: any) {
-        data.slug = String(await func.fillEmpty(data.stitle));
+    async setSlider(res: Response, id: number, data: SetSliderDto) {
         const slider = await this.slidersRepository.findOne({ where: { id: id } });
         if (slider) {
-            slider.stitle = data.stitle;
-            slider.stext = data.stext;
-            slider.simg = data.simg;
-            slider.slug = data.slug;
-            const check = await this.slidersRepository.save(slider);
-            if (check) { res.status(201).json({ message: "Slider başarıyla güncellendi" }); return; }
-            else { res.status(400).json({ message: "Slider güncellenemedi" }); return; }
+            Object.assign(slider, data);
+            const check = await this.slidersRepository.update(id, data);
+            if (check.affected > 0) { return res.status(201).send({ message: "Slider başarıyla güncellendi" }); }
+            else { return res.status(400).send({ message: "Slider güncellenemedi" }); }
         }
-        else { res.status(400).json({ message: "Slider bulunamadı" }); return; }
+        else { return res.status(400).send({ message: "Slider bulunamadı" }); }
+
     }
 
     async delSlider(res, id: number) {
         const slider = await this.slidersRepository.findOne({ where: { id: id } });
         if (slider) {
-            const check = await this.slidersRepository.delete(slider.id);
-            if (check.affected > 0) { res.status(201).send({ message: "Slider başarıyla silindi" }); return; }
-            else { res.status(400).send({ message: "Slider silinemedi" }); return; }
+            const check = await this.slidersRepository.delete(id);
+            if (check.affected > 0) { return res.status(201).send({ message: "Slider başarıyla silindi" }); }
+            else { return res.status(400).send({ message: "Slider silinemedi" }); }
         }
-        else { res.status(400).send({ message: "Slider bulunamadı" }); return; }
+        else { return res.status(400).send({ message: "Slider bulunamadı" }); }
     }
 
 }

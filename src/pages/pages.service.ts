@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PagesEntity } from './entities/pages.entity';
-import { CreatePageDto } from './dto/create-page.dto';
 import { Functions } from 'services/functions/functions';
-import { UploadPhotoDto } from 'src/users/dto/photo.dto';
-import { Images } from 'src/users/entities/images.entity';
+import { Images } from 'src/media/entities/images.entity';
+import { Repository } from 'typeorm';
+import { CreatePageDto } from './dto/create-page.dto';
+import { PagesEntity } from './entities/pages.entity';
 
 const func = new Functions;
 
@@ -20,15 +19,7 @@ export class PagesService {
 
     async create(data: CreatePageDto, uid: number, res) {
         data.author_id = uid;
-        data.title = data.title;
-        data.excerpt = data.excerpt;
-        data.body = data.body;
         data.slug = await func.fillEmpty(data.title);
-        data.meta_description = data.meta_description;
-        data.meta_keywords = data.meta_keywords;
-        data.status = data.status;
-        data.breadimage = data.breadimage;
-        data.titlesmall = data.titlesmall;
         const isexist = await this.pagesRepository.findOne({ where: { slug: data.slug } });
         if (isexist) { return res.status(400).send({ message: 'Bu sayfa zaten mevcut.' }) }
         const check = await this.pagesRepository.create(data);
@@ -56,24 +47,18 @@ export class PagesService {
     }
 
     async update(pageid: number, data: CreatePageDto, uid: number, res) {
-        const check = await this.pagesRepository.findOne({ where: { id: pageid } });
-        data.slug = await func.fillEmpty(data.title);
-        const slug = await this.pagesRepository.findOne({ where: { slug: data.slug } });
-        if (!check) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
-        if (slug) { return res.status(400).send({ message: 'Bu sayfa zaten mevcut.', slug: slug.slug }) }
-        if (uid !== check.author_id) { return res.status(400).send({ message: 'Bu sayfayı düzenleme yetkiniz bulunmuyor.' }) }
-        check.title = data.title;
-        check.excerpt = data.excerpt;
-        check.slug = await func.fillEmpty(data.title);
-        check.body = data.body;
-        check.image = data.image;
-        check.meta_description = data.meta_description;
-        check.meta_keywords = data.meta_keywords;
-        check.status = data.status;
-        check.textimage = data.textimage;
-        check.breadimage = data.breadimage;
-        check.titlesmall = data.titlesmall;
-        await this.pagesRepository.save(check);
+        const page = await this.pagesRepository.findOne({ where: { id: pageid } });
+        if (!page) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
+        Object.assign(page, data);
+        if (data.title) {
+            data.slug = await func.fillEmpty(data.title);
+            if (data.slug !== page.slug) {
+                const isexist = await this.pagesRepository.findOne({ where: { slug: data.slug } });
+                if (isexist) { return res.status(400).send({ message: 'Bu sayfa zaten mevcut.' }) }
+            }
+        }
+        const update = await this.pagesRepository.update({ id: pageid }, data);
+        if (update.affected < 1 || uid !== page.author_id) return res.status(400).send({ message: 'Sayfa güncellenemedi.' });
         return res.status(200).send({ message: 'Sayfa başarıyla güncellendi.' })
     }
 

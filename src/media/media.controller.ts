@@ -1,18 +1,23 @@
-import { Body, Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { MediaService } from './media.service';
+import { Body, Controller, FileTypeValidator, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { Functions } from 'services/functions/functions';
 import { UploadPhotoDto } from './dto/photo.dto';
-import { ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { MediaService } from './media.service';
+import { FileTypeConstant } from 'constants/filetype.constant';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 
 const func = new Functions;
 
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 @Controller('media')
+@ApiTags('Media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) { }
 
-  @Post('upload/:type')
+  @Post('upload/:route')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -37,17 +42,15 @@ export class MediaController {
       }
     })
   }))
-  async uploadFile(@Body() files: UploadPhotoDto, @Param('type') type: string, @UploadedFile(new ParseFilePipe({
+  async uploadFile(@Body() files: UploadPhotoDto, @Param('route') route: string, @UploadedFile(new ParseFilePipe({
     validators: [
-      new FileTypeValidator({ fileType: /(jpg|png|jpeg)$/ })]
+      new FileTypeValidator({ fileType: FileTypeConstant.IMAGE })]
   })) file: Express.Multer.File) {
     files.itype = file.mimetype.split('/')[1]
     files.iname = file.filename
     files.iurl = file.path
     files.ialt = await func.fillEmpty(file.originalname)
-    return await this.mediaService.uploadFile(files, type)
+    return await this.mediaService.uploadFile(files, route)
   }
 
 }
-
-// TODO dosya uzantılarını constanttan al

@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Blogs } from './entities/blogs.entity';
+import { Functions } from 'services/functions/functions';
+import { Images } from 'src/media/entities/images.entity';
 import { Repository } from 'typeorm';
 import { CreateBlogDto } from './dto/blog.dto';
-import { Functions } from 'services/functions/functions';
-import { Images } from 'src/users/entities/images.entity';
-import { UploadPhotoDto } from 'src/users/dto/photo.dto';
+import { Blogs } from './entities/blogs.entity';
 
 const func = new Functions;
 
@@ -14,8 +13,6 @@ export class BlogsService {
     constructor(
         @InjectRepository(Blogs)
         private readonly blogsRepository: Repository<Blogs>,
-        @InjectRepository(Images)
-        private readonly imagesRepository: Repository<Images>,
     ) { }
 
     async findAll() {
@@ -40,12 +37,18 @@ export class BlogsService {
     }
 
     async update(blogid: number, data: CreateBlogDto, res) {
-        data.slug = await func.fillEmpty(data.title);
         const blog = await this.blogsRepository.findOne({ where: { id: blogid } });
-        const slug = await this.blogsRepository.findOne({ where: { slug: data.slug } });
-        if (slug) { return res.status(400).json({ message: 'Bu haber zaten mevcut.', slug: slug.slug }); }
         if (!blog) { return res.status(404).json({ message: 'Böyle bir haber yok!' }); }
-        await this.blogsRepository.update({ id: blogid }, data);
+        Object.assign(blog, data)
+        if (data.title) {
+            data.slug = await func.fillEmpty(data.title);
+            if (data.slug !== blog.slug) {
+                const isexist = await this.blogsRepository.findOne({ where: { slug: data.slug } });
+                if (isexist) { return res.status(400).json({ message: 'Bu haber zaten mevcut.' }); }
+            }
+        }
+        const update = await this.blogsRepository.update({ id: blogid }, data);
+        if (update.affected < 1) return res.status(400).json({ message: 'Haber güncellenemedi.' });
         return res.status(200).json({ message: 'Haber güncellendi.' });
     }
 

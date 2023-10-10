@@ -5,7 +5,7 @@ import { Users } from './entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { JwtService } from '@nestjs/jwt';
-import { Images } from './entities/images.entity';
+import { Images } from '../media/entities/images.entity';
 import { Permissions } from 'src/permissions/entities/permissions.entity';
 import { Roles } from 'src/permissions/entities/roles.entity';
 

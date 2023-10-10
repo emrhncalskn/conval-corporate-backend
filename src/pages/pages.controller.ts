@@ -1,14 +1,11 @@
-import { Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { PagesService } from './pages.service';
-import { CreatePageDto } from './dto/create-page.dto';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { PermissionGuard } from 'src/permissions/guards/permission.guard';
-import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Functions } from 'services/functions/functions';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { UploadPhotoDto } from 'src/users/dto/photo.dto';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { CreatePageDto } from './dto/create-page.dto';
+import { PagesService } from './pages.service';
 
 const func = new Functions;
 
