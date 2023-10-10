@@ -3,6 +3,7 @@ import { Users } from 'src/users/entities/users.entity';
 import { UsersService } from 'src/users/users.service';
 import { Encryptor } from 'services/encyrption/encyrpt-data';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 const encrypt = new Encryptor;
 
@@ -12,8 +13,6 @@ export class AuthService {
         private readonly usersService: UsersService,
         private jwtService: JwtService,
     ) { }
-
-
 
     async validateUser(email: string, password: string) {
 
@@ -25,15 +24,28 @@ export class AuthService {
         return null;
     }
 
-    async login(user: Users) {
+    async login(userInfo: Users, res: any) {
+        const { password, ...user } = userInfo;
         const payload = {
             sub: {
-                id: user
+                id: user.id
             }
         }
-        return {
+
+        return res.status(200).json({
+            user: user,
             accessToken: this.jwtService.sign(payload),
-        };
+        })
+    }
+
+    async createUser(createUserDto: CreateUserDto, res: any) {
+        const checkEmail = await this.usersService.findOneWithEmail(createUserDto.email);
+        const checkUserName = await this.usersService.findOneWithUserName(createUserDto.username);
+        if (checkEmail) return res.status(400).json({ message: 'Bu email adresi kullanılmaktadır.' });
+        if (checkUserName) return res.status(400).json({ message: 'Bu kullanıcı adı kullanılmaktadır.' });
+
+        const user = await this.usersService.create(createUserDto);
+        await this.login(user, res);
     }
 
 }

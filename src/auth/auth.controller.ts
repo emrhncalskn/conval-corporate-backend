@@ -19,23 +19,15 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'Kullanıcı girişi ve doğrulama. (Login İşlemi)' })
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Body() authDto: AuthDto, @Request() req) {
-        return await this.authService.login(req.user.id);
+    async login(@Body() authDto: AuthDto, @Res() res, @Req() req) {
+        return await this.authService.login(req.user, res);
     }
 
     @PassAuth()
     @ApiResponse({ status: 200, description: 'Yeni kullanıcı oluşturur. (Register İşlemi)' })
     @Post('register')
-    async register(@Body() data: CreateUserDto, @Req() req) {
-        const emailcheck = await this.usersService.findOneWithEmail(data.email);
-        const usercheck = await this.usersService.findOneWithUserName(data.username);
-        let msg = '';
-
-        emailcheck ? msg = 'Bu email ile kayıt olunmuş' :
-            usercheck ? msg = 'Bu kullanıcı adı ile kayıt olunmuş' :
-                (msg = 'Kayıt başarılı', await this.usersService.create(data));
-
-        return await this.login({ email: data.username, password: data.password }, req);
+    async register(@Body() data: CreateUserDto, @Res() res) {
+        return await this.authService.createUser(data, res);
     }
 }
 

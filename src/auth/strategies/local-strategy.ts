@@ -1,7 +1,6 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
-import { AuthDto } from "../dto/auth.dto";
 import { AuthService } from "../auth.service";
 
 //user authentication
@@ -12,7 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private authService: AuthService) {
         super({
             usernameField: 'email',
-            passwordField: 'password'
+            passwordField: 'password',
         });
     }
 

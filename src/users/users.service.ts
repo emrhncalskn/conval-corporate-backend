@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Encryptor } from 'services/encyrption/encyrpt-data';
 import { Roles } from 'src/permissions/entities/roles.entity';
 import { Repository } from 'typeorm';
-import { Images } from '../media/entities/images.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetUserDto } from './dto/set-user.dto';
 import { Users } from './entities/users.entity';
@@ -16,8 +15,6 @@ export class UsersService {
     constructor(
         @InjectRepository(Users)
         private userRepository: Repository<Users>,
-        @InjectRepository(Images)
-        private imagesRepository: Repository<Images>,
         @InjectRepository(Roles)
         private rolesRepository: Repository<Roles>,
     ) { }
@@ -26,8 +23,7 @@ export class UsersService {
         createUserDto.password = await encrypt.hashPassword(createUserDto.password);
         const user = await this.userRepository.create(createUserDto);
         await this.userRepository.save(user);
-        const { password, ...result } = user;
-        return result;
+        return user;
     }
 
     async findAll(): Promise<Users[]> {

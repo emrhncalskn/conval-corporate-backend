@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -16,7 +16,7 @@ export class MenuController {
 
   @Permission(38)
   @Get('get/byid/:id')
-  async getMenu(@Param('id') id: number) {
+  async getMenu(@Param('id') id: number, @Req() req) {
     return await this.menuService.getMenu(id);
   }
 
