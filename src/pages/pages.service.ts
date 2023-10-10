@@ -4,15 +4,15 @@ import { Functions } from 'services/functions/functions';
 import { Images } from 'src/media/entities/images.entity';
 import { Repository } from 'typeorm';
 import { CreatePageDto } from './dto/create-page.dto';
-import { PagesEntity } from './entities/pages.entity';
+import { Pages } from './entities/pages.entity';
 
 const func = new Functions;
 
 @Injectable()
 export class PagesService {
     constructor(
-        @InjectRepository(PagesEntity)
-        private pagesRepository: Repository<PagesEntity>,
+        @InjectRepository(Pages)
+        private pagesRepository: Repository<Pages>,
         @InjectRepository(Images)
         private imagesRepository: Repository<Images>,
     ) { }
