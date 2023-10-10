@@ -34,7 +34,7 @@ export class AppController {
     return this.appService.findTableData(res,tableName);
   }
   @Post('table/:table_name')
-  createTableData(@Res() res : Response, @Param('table_name') tableName: string,@Body() data: any){
+  createTableData(@Res() res : Response, @Param('table_name') tableName: string,@Body() data){
     return this.appService.createData(res,tableName,data);
   }
 }
