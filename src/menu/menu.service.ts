@@ -21,7 +21,6 @@ export class MenuService {
         const menu = await this.menuRepository.findOne({ where: { id: id } });
         if (!menu) { return { message: 'Böyle bir menü yok!' } }
         if (!menu.page_belongs) { return { menu, pages: [] } }
-        console.log('girdim')
         const pageBelongs = JSON.parse(menu.page_belongs);
         let pages = [];
         for (let i = 0; i < pageBelongs.length; i++) {

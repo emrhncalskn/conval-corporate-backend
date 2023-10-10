@@ -10,7 +10,7 @@ import { UsersService } from './users.service';
 const func = new Functions;
 
 @ApiBearerAuth()
-@UseGuards(JwtGuard, PermissionGuard)
+@UseGuards(PermissionGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {

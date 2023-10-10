@@ -13,7 +13,7 @@ import { Permission } from 'src/permissions/decorators/permission.decorator';
 const func = new Functions;
 
 @ApiBearerAuth()
-@UseGuards(JwtGuard, PermissionGuard)
+@UseGuards(PermissionGuard)
 @Controller('media')
 @ApiTags('Media')
 export class MediaController {

@@ -11,6 +11,8 @@ import { LocalStrategy } from './strategies/local-strategy';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { Images } from 'src/media/entities/images.entity';
 import { Roles } from 'src/permissions/entities/roles.entity';
+import { JwtGuard } from './guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,7 +24,12 @@ import { Roles } from 'src/permissions/entities/roles.entity';
       }),
     PassportModule
   ],
-  providers: [AuthService, UsersService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, UsersService, LocalStrategy, JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
   controllers: [AuthController]
 })
 export class AuthModule { }

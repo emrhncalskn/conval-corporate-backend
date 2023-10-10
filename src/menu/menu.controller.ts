@@ -5,27 +5,29 @@ import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
+import { PassAuth } from 'src/auth/guards/pass-auth.guard';
 
+@ApiBearerAuth()
 @Controller('menu')
 @UseGuards(PermissionGuard)
 @ApiTags('Menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) { }
 
-  @ApiBearerAuth()
   @Permission(38)
-  @UseGuards(JwtGuard)
   @Get('get/byid/:id')
   async getMenu(@Param('id') id: number) {
     return await this.menuService.getMenu(id);
   }
 
+  @PassAuth()
   @Permission()
   @Get('get/byslug/:slug')
   async getMenuBySlug(@Param('slug') slug: string) {
     return await this.menuService.getMenuBySlug(slug);
   }
 
+  @PassAuth()
   @Permission()
   @Get('get/all')
   async getMenus() {
@@ -33,25 +35,18 @@ export class MenuController {
   }
 
   @Permission(39)
-  @UseGuards(JwtGuard)
-  @ApiBearerAuth()
   @Post('create')
   async createMenu(@Body() data: CreateMenuDto, @Res() res) {
-    console.log('agubugu')
     return await this.menuService.createMenu(data, res);
   }
 
-  @ApiBearerAuth()
   @Permission(40)
-  @UseGuards(JwtGuard)
   @Post('set/:id')
   async setMenu(@Body() data: UpdateMenuDto, @Param('id') id: number, @Res() res) {
     return await this.menuService.setMenu(data, id, res);
   }
 
-  @ApiBearerAuth()
   @Permission(41)
-  @UseGuards(JwtGuard)
   @Post('delete/:id')
   async deleteMenu(@Param('id') id: number, @Res() res) {
     return await this.menuService.deleteMenu(id, res);
