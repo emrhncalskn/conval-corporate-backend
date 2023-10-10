@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
+import { request } from 'express';
 
 async function bootstrap() {
   //.env dosyası import işlemi
@@ -39,6 +40,7 @@ async function bootstrap() {
 
   //------------
 
-  await app.listen(3006);
+  const listener = await app.listen(3006);
+  console.log(`Uygulama ':${listener.address().port}' portunda çalışıyor.`);
 }
 bootstrap();

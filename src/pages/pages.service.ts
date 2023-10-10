@@ -84,11 +84,4 @@ export class PagesService {
         await this.pagesRepository.delete({ id: pageid });
         return res.status(200).send({ message: 'Sayfa başarıyla silindi.' })
     }
-
-    async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
-        const photo = await this.imagesRepository.create(photoDto);
-        await this.imagesRepository.save(photo);
-        await this.pagesRepository.update({ id: uid }, { image: '/pages/' + photo.iname });
-        return '/pages/' + photo.iname;
-    }
 }

@@ -31,7 +31,7 @@ export class SlidersService {
         else { res.status(400).send({ message: "Slider bulunamadı" }); return; }
     }
 
-    async create(res : Response, data: CreateSliderDto) {
+    async create(res: Response, data: CreateSliderDto) {
         data.slug = String(await func.fillEmpty(data.stitle));
         const isexist = await this.slidersRepository.findOne({ where: { slug: data.slug } });
         if (isexist) { res.status(400).json({ message: "Bu slug zaten mevcut" }); return; }
@@ -41,7 +41,7 @@ export class SlidersService {
         else { res.status(400).json({ message: "Slider oluşturulamadı" }); return; }
     }
 
-    async setSlider(res : Response, id: number, data: any) {
+    async setSlider(res: Response, id: number, data: any) {
         data.slug = String(await func.fillEmpty(data.stitle));
         const slider = await this.slidersRepository.findOne({ where: { id: id } });
         if (slider) {
@@ -64,13 +64,6 @@ export class SlidersService {
             else { res.status(400).send({ message: "Slider silinemedi" }); return; }
         }
         else { res.status(400).send({ message: "Slider bulunamadı" }); return; }
-    }
-
-    async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
-        const photo = await this.imagesRepository.create(photoDto);
-        await this.imagesRepository.save(photo);
-        await this.slidersRepository.update({ id: uid }, { simg: '/sliders/' + photo.iname });
-        return '/sliders/' + photo.iname;
     }
 
 }

@@ -56,10 +56,4 @@ export class BlogsService {
         return res.status(200).json({ message: 'Haber silindi.' });
     }
 
-    async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
-        const photo = this.imagesRepository.create(photoDto);
-        await this.imagesRepository.save(photo);
-        await this.blogsRepository.update({ id: uid }, { img: `/blogs/${photo.iname}` });
-        return `/blogs/${photo.iname}`;
-    }
 }

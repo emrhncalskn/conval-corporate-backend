@@ -58,11 +58,4 @@ export class GeneralsService {
         await this.generalsRepository.delete({ id: generalid });
         return res.status(200).send({ message: 'General silindi.' });
     }
-
-    async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
-        const photo = await this.imagesRepository.create(photoDto);
-        await this.imagesRepository.save(photo);
-        await this.generalsRepository.update({ id: uid }, { img: `/generals/${photo.iname}` });
-        return `/generals/${photo.iname}`;
-    }
 }

@@ -13,6 +13,7 @@ import { join } from 'path';
 import { PermissionsModule } from './permissions/permissions.module';
 import { GeneralsModule } from './generals/generals.module';
 import { MenuModule } from './menu/menu.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [TypeOrmModule,
@@ -34,7 +35,7 @@ import { MenuModule } from './menu/menu.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule],
+    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule],
   controllers: [AppController],
   providers: [AppService],
 })

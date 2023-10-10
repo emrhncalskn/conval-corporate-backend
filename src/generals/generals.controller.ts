@@ -62,43 +62,4 @@ export class GeneralsController {
     return await this.generalsService.delete(id, res);
   }
 
-  @Permission(23)
-  @ApiBearerAuth()
-  @UseGuards(JwtGuard)
-  @ApiResponse({ status: 201, description: 'Ürün fotoğrafı ekler' })
-  @Post('upload/:id')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './assets/images/uploads/generals/',
-      filename: (req, file, cb) => { //cb = callback
-        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-        return cb(null, `${randomName}` + '.' + `${file.mimetype.split('/')[1]}`)
-      }
-    })
-  }))
-  async uploadImg(@Body() photo: UploadPhotoDto, @Param('id') id: number, @UploadedFile(new ParseFilePipe({
-    validators: [
-      new MaxFileSizeValidator({ maxSize: 1000000 }),
-      new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ })]
-  })) file: Express.Multer.File) {
-    photo.itype = file.mimetype.split('/')[1]
-    photo.iname = file.filename
-    photo.iurl = file.path
-    photo.ialt = await func.fillEmpty(file.originalname)
-    if (file.size > 1000000) { return 'Boyutu çok büyük! Max: (10MB)' }
-    return this.generalsService.uploadPhoto(photo, id)
-  }
-
 }

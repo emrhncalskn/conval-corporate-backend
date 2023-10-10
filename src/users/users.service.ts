@@ -77,13 +77,6 @@ export class UsersService {
         else { res.status(400).send({ message: "Kullanıcı bilgileri güncellenemedi" }); }
     }
 
-    async uploadPhoto(photoDto: UploadPhotoDto, uid: number) {
-        const photo = this.imagesRepository.create(photoDto);
-        await this.imagesRepository.save(photo);
-        await this.userRepository.update({ id: uid }, { img: `/users/${photo.iname}` });
-        return `/users/${photo.iname}`;
-    }
-
     async getRegisterRequests() {
         const users = await this.userRepository.find({ where: { user_role: 0 } });
         if (!users) { return 'Kayıt isteği bulunamadı.' }
