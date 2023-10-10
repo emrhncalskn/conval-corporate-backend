@@ -18,23 +18,6 @@ export class PagesService {
         private pagesExtraRepository: Repository<PageExtra>,
     ) { }
 
-    async findAllExtra(res) {
-        const pages = await this.pagesExtraRepository.find();
-        if (!pages) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
-        return res.status(200).send(pages);
-    }
-
-    async findOneExtra(res, pageid: number) {
-        const page = await this.pagesExtraRepository.findOne({ where: { id: pageid } });
-        if (!page) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
-        return res.status(200).send(page);
-    }
-
-    async findBySlugExtra(res, slug: string) {
-        const page = await this.pagesExtraRepository.findOne({ where: { slug: slug } });
-        if (!page) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
-        return res.status(200).send(page);
-    }
 
     async create(data: CreatePageDto, uid: number, res) {
         data.author_id = uid;
@@ -87,6 +70,24 @@ export class PagesService {
         if (uid !== check.author_id) { return res.status(400).send({ message: 'Bu sayfayı silme yetkiniz bulunmuyor.' }) }
         await this.pagesRepository.delete({ id: pageid });
         return res.status(200).send({ message: 'Sayfa başarıyla silindi.' })
+    }
+
+    async findAllExtra(res) {
+        const pages = await this.pagesExtraRepository.find();
+        if (!pages) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
+        return res.status(200).send(pages);
+    }
+
+    async findOneExtra(res, pageid: number) {
+        const page = await this.pagesExtraRepository.findOne({ where: { id: pageid } });
+        if (!page) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
+        return res.status(200).send(page);
+    }
+
+    async findBySlugExtra(res, slug: string) {
+        const page = await this.pagesExtraRepository.findOne({ where: { slug: slug } });
+        if (!page) { return res.status(400).send({ message: 'Sayfa bulunamadı.' }) }
+        return res.status(200).send(page);
     }
 
     async createExtra(data: PageExtraDto, uid: number, res) {
