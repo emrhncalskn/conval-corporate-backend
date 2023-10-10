@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { MenuType } from "./menu_type.entity";
+import { Pages } from "src/pages/entities/pages.entity";
 
 @Entity('menu')
 export class Menu {
@@ -13,6 +14,8 @@ export class Menu {
     slug: string;
     @Column({ nullable: true })
     menu_belong: number; //sub-menu
+    @Column({ type: 'text', nullable: true })
+    page_belongs: string;
     @Column({ type: 'text', nullable: true })
     route: string;
     @Column({ default: 0 })

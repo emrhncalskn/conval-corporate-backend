@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Menu } from "src/menu/entities/menu.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('pages')
-export class PagesEntity {
+export class Pages {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
