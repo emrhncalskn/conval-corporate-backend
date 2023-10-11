@@ -68,7 +68,7 @@ export class UsersService {
     }
 
     async getRegisterRequests() {
-        const users = await this.userRepository.find({ where: { user_role: 0 } });
+        const users = await this.userRepository.find({ where: { role_id: 0 } });
         if (!users) { return 'Kayıt isteği bulunamadı.' }
         let results = [];
         for (let i = 0; i < users.length; i++) { const { password, ...result } = users[i]; results.push(result); }
@@ -76,16 +76,16 @@ export class UsersService {
     }
 
     async acceptRegisterRequest(id: number, res) {
-        const user = await this.userRepository.findOne({ where: { id: id, user_role: 0 } });
+        const user = await this.userRepository.findOne({ where: { id: id, role_id: 0 } });
         if (!user) { return res.send({ status: 404, message: `ID: [${id}] sahip kullanıcı bulunamadı veya halihazırda onaylanmış.` }); }
-        const accept = await this.userRepository.update({ id: id }, { user_role: 1 });
+        const accept = await this.userRepository.update({ id: id }, { role_id: 1 });
         if (accept.affected < 1) { return res.send('Onaylama işlemi sırasında bir hata oluştu.'); }
-        const { password, ...result } = user; result.user_role = 1; //şifresiz ve role_id güncel halini basmak için
+        const { password, ...result } = user; result.role_id = 1; //şifresiz ve role_id güncel halini basmak için
         return res.send({ status: 200, message: `Kullanıcı onaylandı.`, user: result });
     }
 
     async declineRegisterRequest(id: number, res) {
-        const user = await this.userRepository.findOne({ where: { id: id, user_role: 0 } });
+        const user = await this.userRepository.findOne({ where: { id: id, role_id: 0 } });
         if (!user) { return res.send({ status: 404, message: `ID: [${id}] kullanıcı bulunamadı veya halihazırda reddedilmiş.` }); }
         const decline = await this.userRepository.delete({ id: id });
         if (decline.affected < 1) { return res.send('Reddetme işlemi sırasında bir hata oluştu.') }
@@ -96,8 +96,8 @@ export class UsersService {
     async setUserRole(id: number, role: number, res) {
         const user = await this.userRepository.findOne({ where: { id: id } });
         if (!user) { return res.send({ status: 404, message: `ID: [${id}] kullanıcı bulunamadı.` }); }
-        if (user.user_role === 0) { return res.send({ status: 400, message: `ID: [${id}] kullanıcısı hala onay bekliyor.` }); }
-        const set = await this.userRepository.update({ id: id }, { user_role: role });
+        if (user.role_id === 0) { return res.send({ status: 400, message: `ID: [${id}] kullanıcısı hala onay bekliyor.` }); }
+        const set = await this.userRepository.update({ id: id }, { role_id: role });
         const roles = await this.rolesRepository.findOne({ where: { id: role } })
         if (set.affected < 1) {
             return res.send('Role düzenleme işlemi sırasında bir hata oluştu.');

@@ -31,7 +31,7 @@ export class PermissionGuard {
     const uid = this.jwtService.decode(jwt);
     if (!uid['sub']['id']) { throw new HttpException("Bu fonksiyonu kullanmaya yetkiniz yok!", HttpStatus.BAD_REQUEST); }
     const user = await this.userRepository.findOne({ where: { id: uid['sub']['id'] } });
-    const funcs = await this.permissionsRepository.find({ where: { func_id: key[0], role_id: user.user_role }, relations: ['roles', 'functions'] });
+    const funcs = await this.permissionsRepository.find({ where: { func_id: key[0], role_id: user.role_id }, relations: ['roles', 'functions'] });
     if (funcs.length < 1) { throw new HttpException("Bu fonksiyonu kullanmaya yetkiniz yok!", HttpStatus.BAD_REQUEST); }
     return true;
   }

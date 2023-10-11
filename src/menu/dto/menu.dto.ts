@@ -14,7 +14,7 @@ export class CreateMenuDto {
     @ApiHideProperty()
     slug: string;
     @ApiProperty()
-    menu_belong: number;
+    menu_belong_id: number;
     @ApiProperty({ type: [MenuDto] })
     page_belongs: MenuDto[];
     @ApiProperty()

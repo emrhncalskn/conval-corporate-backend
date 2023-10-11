@@ -30,7 +30,7 @@ export class PermissionsService {
     }
 
     async getPermissions(res) {
-        const perms = await this.permissionsRepository.find({ relations: { functions: true, roles: true } });
+        const perms = await this.permissionsRepository.find({ relations: { function: true, role: true } });
         if (perms) {
             res.status(200).json(perms); return 200;
         }
@@ -38,7 +38,7 @@ export class PermissionsService {
     }
 
     async getPermission(permid: number, res) {
-        const perm = await this.permissionsRepository.findOne({ where: { id: permid }, relations: { functions: true, roles: true } });
+        const perm = await this.permissionsRepository.findOne({ where: { id: permid }, relations: { function: true, role: true } });
         if (perm) {
             res.status(200).json(perm); return 200;
         }
@@ -107,12 +107,12 @@ export class PermissionsService {
     }
 
     async getFunctions(res) {
-        const functions = await this.permissionsRepository.find({ relations: { functions: true } });
+        const functions = await this.permissionsRepository.find({ relations: { function: true } });
         if (functions) {
             const func = [];
             functions.forEach(element => {
-                if (!func.includes(element.functions)) {
-                    func.push(element.functions);
+                if (!func.includes(element.function)) {
+                    func.push(element.function);
                 }
             });
             res.status(200).json(func); return 200;
