@@ -9,6 +9,9 @@ export class Permissions {
 
     @Column()
     role_id: number;
+
+    // fk isimlendirmeleri fk_{alias_name}_{column_name} şeklinde yapılmalı
+    // Roles burada çoğul değil tekil verilmeli.
     @ManyToOne(() => Roles, roles => roles.permissions)
     @JoinColumn({
         name: "role_id",
@@ -19,6 +22,9 @@ export class Permissions {
 
     @Column()
     func_id: number;
+
+    // fk isimlendirmeleri fk_{alias_name}_{column_name} şeklinde yapılmalı
+    // functions burada cogul degıl tekil olarak verilebilir.
     @ManyToOne(() => Functions, functions => functions.permissions)
     @JoinColumn({
         name: "func_id",

@@ -15,6 +15,9 @@ export class Users extends BaseEntity {
     email: string;
     @Column()
     password: string;
+    //Join eksik role tablosuna join atılmalı.
+    //önceki notlarda belirtilenlere göre duzenlenmeli
+    //user_role --> role_id
     @Column()
     user_role: number;
     @Column({ nullable: true })

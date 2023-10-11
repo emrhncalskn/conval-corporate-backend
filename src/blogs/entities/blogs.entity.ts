@@ -5,6 +5,8 @@ export class Blogs {
 
     @PrimaryGeneratedColumn()
     id: number;
+    // Join atılmalı mı?
+    // author_id ye eğer user id atılıyorsa join atılmalı
     @Column()
     author_id: number;
     @Column()

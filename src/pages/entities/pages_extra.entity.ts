@@ -5,6 +5,8 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 export class PageExtra {
     @PrimaryGeneratedColumn()
     id: number;
+    // Join olmalı mı?
+    // author_id ye eğer user id atılıyorsa join atılmalı
     @Column({ nullable: true })
     author_id: number;
     @Column({ type: 'text', nullable: true })

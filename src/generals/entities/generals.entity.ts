@@ -16,8 +16,10 @@ export class Generals {
     button: string;
     @Column({ type: 'text', nullable: true })
     href: string;
+    // type ve default verilmemeli
     @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
+    // type ve default verilmemeli
     @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 }

@@ -4,6 +4,8 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 export class Pages {
     @PrimaryGeneratedColumn()
     id: number;
+    // Join olmalı mı?
+    // author_id ye eğer user id atılıyorsa join atılmalı
     @Column()
     author_id: number;
     @Column()
