@@ -5,8 +5,6 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 export class PageExtra {
     @PrimaryGeneratedColumn()
     id: number;
-    // Join olmalı mı?
-    // author_id ye eğer user id atılıyorsa join atılmalı
     @Column({ nullable: true })
     author_id: number;
     @Column({ type: 'text', nullable: true })
@@ -35,4 +33,12 @@ export class PageExtra {
     created_at: Date;
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(() => Users, author => author.page_extras)
+    @JoinColumn({
+        name: "author_id",
+        referencedColumnName: "id",
+        foreignKeyConstraintName: "fk_pages_extra_author_id"
+    })
+    author: Users;
 }

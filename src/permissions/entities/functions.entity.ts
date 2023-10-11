@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Permissions } from "./permissions.entity";
 
 @Entity('functions')
@@ -10,6 +10,6 @@ export class Functions {
     @Column()
     api: string;
 
-    @OneToMany(() => Permissions, permissions => permissions.functions)
+    @OneToMany(() => Permissions, permissions => permissions.function)
     permissions: Permissions[];
 }

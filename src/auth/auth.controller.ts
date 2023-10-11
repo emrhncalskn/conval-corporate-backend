@@ -1,10 +1,9 @@
-import { Controller, Post, Body, Request, UseGuards, Res, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UsersService } from 'src/users/users.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import { PassAuth } from './guards/pass-auth.guard';
 
 @ApiTags('Auth')
@@ -12,7 +11,6 @@ import { PassAuth } from './guards/pass-auth.guard';
 export class AuthController {
     constructor(
         private authService: AuthService,
-        private usersService: UsersService,
     ) { }
 
     @PassAuth()

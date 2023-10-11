@@ -8,6 +8,6 @@ export class MenuType {
     @Column()
     name: string;
 
-    @OneToMany(() => Menu, menu => menu.menutype)
+    @OneToMany(() => Menu, menu => menu.menu_type)
     menu: Menu[];
 }

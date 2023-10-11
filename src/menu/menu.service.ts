@@ -82,7 +82,7 @@ export class MenuService {
     async deleteMenu(id: number, res) {
         const menu = await this.menuRepository.findOne({ where: { id: id } });
         if (!menu) { return res.status(400).send('Menü bulunamadı.') }
-        if (menu.menu_belong) { return res.status(400).send('Bu menüye ait alt menüler var. Önce onları silmelisiniz.') }
+        if (menu.menu_belong_id) { return res.status(400).send('Bu menüye ait alt menüler var. Önce onları silmelisiniz.') }
         const check = await this.menuRepository.delete(id);
         if (!check) { return res.status(400).send('Menü silinirken hata oluştu.') }
         return res.status(200).send('Menü başarıyla silindi.')

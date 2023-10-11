@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Roles } from './roles.entity';
 import { Functions } from './functions.entity';
 
@@ -10,27 +10,23 @@ export class Permissions {
     @Column()
     role_id: number;
 
-    // fk isimlendirmeleri fk_{alias_name}_{column_name} şeklinde yapılmalı
-    // Roles burada çoğul değil tekil verilmeli.
-    @ManyToOne(() => Roles, roles => roles.permissions)
+    @ManyToOne(() => Roles, role => role.permissions)
     @JoinColumn({
         name: "role_id",
         referencedColumnName: "id",
-        foreignKeyConstraintName: "FK_permissions_roles"
+        foreignKeyConstraintName: "fk_permissions_role_id"
     })
-    roles: Roles;
+    role: Roles;
 
     @Column()
     func_id: number;
 
-    // fk isimlendirmeleri fk_{alias_name}_{column_name} şeklinde yapılmalı
-    // functions burada cogul degıl tekil olarak verilebilir.
-    @ManyToOne(() => Functions, functions => functions.permissions)
+    @ManyToOne(() => Functions, func => func.permissions)
     @JoinColumn({
         name: "func_id",
         referencedColumnName: "id",
-        foreignKeyConstraintName: "FK_permissions_functions"
+        foreignKeyConstraintName: "fk_permissions_func_id"
     })
-    functions: Functions;
+    function: Functions;
 
 }

@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { MenuService } from './menu.service';
-import { Permission } from 'src/permissions/decorators/permission.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { PassAuth } from 'src/auth/guards/pass-auth.guard';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
+import { MenuService } from './menu.service';
 
 @ApiBearerAuth()
 @Controller('menu')

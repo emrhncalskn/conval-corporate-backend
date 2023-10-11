@@ -1,11 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Users } from "../../users/entities/users.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('pages')
 export class Pages {
     @PrimaryGeneratedColumn()
     id: number;
-    // Join olmalı mı?
-    // author_id ye eğer user id atılıyorsa join atılmalı
     @Column()
     author_id: number;
     @Column()
@@ -34,4 +33,12 @@ export class Pages {
     created_at: Date;
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(() => Users, author => author.pages)
+    @JoinColumn({
+        name: "author_id",
+        referencedColumnName: "id",
+        foreignKeyConstraintName: "fk_pages_author_id"
+    })
+    author: Users;
 }

@@ -1,5 +1,8 @@
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { PageExtra } from '../../pages/entities/pages_extra.entity';
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Pages } from '../../pages/entities/pages.entity';
+import { Roles } from '../../permissions/entities/roles.entity';
+import { Blogs } from '../../blogs/entities/blogs.entity';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -15,11 +18,8 @@ export class Users extends BaseEntity {
     email: string;
     @Column()
     password: string;
-    //Join eksik role tablosuna join atılmalı.
-    //önceki notlarda belirtilenlere göre duzenlenmeli
-    //user_role --> role_id
-    @Column()
-    user_role: number;
+    @Column({ default: 0 })
+    role_id: number;
     @Column({ nullable: true })
     img: string;
     @Column({ nullable: true })
@@ -28,4 +28,21 @@ export class Users extends BaseEntity {
     created_at: Date;
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(() => Roles, role => role.users)
+    @JoinColumn({
+        name: "role_id",
+        referencedColumnName: "id",
+        foreignKeyConstraintName: "fk_users_role_id"
+    })
+    role: Roles;
+
+    @OneToMany(() => Blogs, blogs => blogs.author)
+    blogs: Blogs[];
+
+    @OneToMany(() => Pages, pages => pages.author)
+    pages: Pages[];
+
+    @OneToMany(() => PageExtra, page_extra => page_extra.author)
+    page_extras: PageExtra[];
 }
