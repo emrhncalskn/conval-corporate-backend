@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { ApiTags } from '@nestjs/swagger';
 import { config } from 'dotenv';
 import { Response } from 'express';
+import { PassAuth } from './auth/guards/pass-auth.guard';
 
 config()
 
@@ -11,30 +12,36 @@ config()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    ) { }
+  ) { }
   private url = process.env.SERVER_URL;
-  
+
+  @PassAuth()
   @Get('health-check')
   healthCheck(@Res() res): string {
     return this.appService.healthCheck(res);
   }
 
+  @PassAuth()
   @Get('table-names')
-  getTableNames(@Res() res : Response){
+  getTableNames(@Res() res: Response) {
     return this.appService.findTableNames(res);
   }
 
+  @PassAuth()
   @Get('table/:table_name/:id')
-  getTableSpecificData(@Res() res : Response, @Param('table_name') tableName: string,@Param('id') id: number){
-    return this.appService.findOneData(res,tableName, id);
+  getTableSpecificData(@Res() res: Response, @Param('table_name') tableName: string, @Param('id') id: number) {
+    return this.appService.findOneData(res, tableName, id);
   }
 
+  @PassAuth()
   @Get('table/:table_name')
-  getTableData(@Res() res : Response, @Param('table_name') tableName: string){
-    return this.appService.findTableData(res,tableName);
+  getTableData(@Res() res: Response, @Param('table_name') tableName: string) {
+    return this.appService.findTableData(res, tableName);
   }
+
+  @PassAuth()
   @Post('table/:table_name')
-  createTableData(@Res() res : Response, @Param('table_name') tableName: string,@Body() data){
-    return this.appService.createData(res,tableName,data);
+  createTableData(@Res() res: Response, @Param('table_name') tableName: string, @Body() data) {
+    return this.appService.createData(res, tableName, data);
   }
 }
