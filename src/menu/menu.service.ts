@@ -46,7 +46,7 @@ export class MenuService {
     }
 
     async getMenus() {
-        const menu = await this.menuRepository.find();
+        const menu = await this.menuRepository.find({ where: { status: 1 } });
         if (!menu) { return { message: 'Menü yok' } }
         const menus = [];
         for (let i = 0; i < menu.length; i++) {
