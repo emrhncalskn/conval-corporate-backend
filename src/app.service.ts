@@ -7,12 +7,12 @@ config();
 
 @Injectable()
 export class AppService {
-  constructor(private readonly connection: Connection) {}
+  constructor(private readonly connection: Connection) { }
 
-  async findOneData(res: Response, tableName: string, id: number){
+  async findOneData(res: Response, tableName: string, id: number) {
     try {
       const repository = this.connection.getRepository(tableName);
-      const result = await repository.findOne({ where: { id: id }});
+      const result = await repository.findOne({ where: { id: id } });
       res.status(200).json(result);
       return;
     } catch (error) {
@@ -21,7 +21,7 @@ export class AppService {
     }
   }
 
-  async findTableData(res: Response,tableName: string){
+  async findTableData(res: Response, tableName: string) {
     try {
       const repository = this.connection.getRepository(tableName);
       const result = await repository.find();
@@ -35,14 +35,14 @@ export class AppService {
   async findTableNames(res: Response): Promise<any> {
     console.log(" db_name :: " + process.env.DB_DATABASE);
     const tableNames = await this.connection.query(
-      "SELECT table_name FROM information_schema.tables WHERE table_schema ='"+process.env.DB_DATABASE+"'",
+      "SELECT table_name FROM information_schema.tables WHERE table_schema ='" + process.env.DB_DATABASE + "'",
       [process.env.DB_DATABASE] // Şema adını burada belirtin
     );
     res.status(200).json(tableNames);
     return;
   }
 
-  async createData(res: Response, tableName: string, data: any){
+  async createData(res: Response, tableName: string, data: any) {
     try {
       const repository = this.connection.getRepository(tableName);
       const new_data = repository.create(data);
@@ -52,10 +52,10 @@ export class AppService {
       res.status(400).json(error);
     }
     return;
-      
+
   }
 
-  healthCheck(res : Response): string {
+  healthCheck(res: Response): string {
     res.status(200).json('OK');
     return;
   }

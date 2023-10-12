@@ -4,6 +4,7 @@ import { Images } from 'src/media/entities/images.entity';
 import { Repository } from 'typeorm';
 import { UploadPhotoDto } from './dto/photo.dto';
 import * as fs from 'fs';
+import * as fsPromises from 'fs/promises';
 
 @Injectable()
 export class MediaService {
@@ -12,6 +13,23 @@ export class MediaService {
         @InjectRepository(Images)
         private readonly imagesRepository: Repository<Images>,
     ) { }
+
+    async getMenus(type: string) {
+        let images = [];
+
+        try {
+            const files = await fsPromises.readdir(`./assets/images/uploads/${type}`);
+
+            files.forEach(file => {
+                images.push({ img: `/${type}/${file}` });
+            });
+
+            return { images };
+        } catch (err) {
+            console.error('Dosya okuma hatası:', err);
+            return { images: [] };
+        }
+    }
 
     async uploadFile(fileDto: UploadPhotoDto, type: string) {
         const file = await this.imagesRepository.create(fileDto);

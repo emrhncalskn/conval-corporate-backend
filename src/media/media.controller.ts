@@ -1,14 +1,14 @@
-import { Body, Controller, FileTypeValidator, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, FileTypeValidator, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileTypeConstant } from 'constants/filetype.constant';
 import { diskStorage } from 'multer';
 import { Functions } from 'services/functions/functions';
+import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { UploadPhotoDto } from './dto/photo.dto';
 import { MediaService } from './media.service';
-import { FileTypeConstant } from 'constants/filetype.constant';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { PermissionGuard } from 'src/permissions/guards/permission.guard';
-import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PassAuth } from 'src/auth/guards/pass-auth.guard';
 
 const func = new Functions;
 
@@ -18,6 +18,13 @@ const func = new Functions;
 @ApiTags('Media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) { }
+
+  @PassAuth()
+  @Permission()
+  @Get(':route')
+  async getMenus(@Param('route') type: string) {
+    return await this.mediaService.getMenus(type);
+  }
 
   @Permission()
   @Post('upload/:route')
