@@ -33,7 +33,7 @@ export class MediaService {
 
         else { return 400; }
 
-        return `${newPath}/${type}/${file.iname}`
+        return `/${type}/${file.iname}`
     }
 
 }
