@@ -7,27 +7,27 @@ export class Pages {
     id: number;
     @Column()
     author_id: number;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     title: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     excerpt: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     body: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     image: string;
     @Column()
     slug: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     meta_description: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     meta_keywords: string;
     @Column()
     status: number;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     textimage: string;
     @Column()
     breadimage: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     titlesmall: string;
     @CreateDateColumn()
     created_at: Date;

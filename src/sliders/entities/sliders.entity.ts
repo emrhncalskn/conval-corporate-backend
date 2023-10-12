@@ -6,11 +6,11 @@ export class Sliders extends BaseEntity {
     id: number;
     @Column()
     stitle: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     stext: string;
     @Column()
     slug: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     simg: string;
     @CreateDateColumn()
     created_at: Date;

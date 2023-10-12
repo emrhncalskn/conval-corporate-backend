@@ -4,9 +4,9 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 export class Generals {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
+    @Column({type: 'text', nullable: true})
     title: string;
-    @Column()
+    @Column({type: 'text', nullable: true})
     description: string;
     @Column()
     slug: string;

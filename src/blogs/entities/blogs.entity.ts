@@ -10,17 +10,17 @@ export class Blogs {
     author_id: number;
     @Column()
     title: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     excerpt: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     body: string;
     @Column({ nullable: true })
     img: string;
     @Column()
     slug: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     meta_description: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     meta_keywords: string;
     @Column()
     status: number;
