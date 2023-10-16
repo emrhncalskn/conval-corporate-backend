@@ -58,8 +58,28 @@ export class AppService {
     try {
       const repository = this.connection.getRepository(tableName);
       const update_data = await repository.findOne({ where: { id: id } });
+      if (!update_data) {
+        res.status(400).json({ message: 'Data not found' });
+        return;
+      }
       const new_data = Object.assign(update_data, data);
       const result = await repository.save(new_data);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+    return;
+  }
+
+  async deleteData(res: Response, tableName: string, id: number) {
+    try {
+      const repository = this.connection.getRepository(tableName);
+      const delete_data = await repository.findOne({ where: { id: id } });
+      if (!delete_data) {
+        res.status(400).json({ message: 'Data not found' });
+        return;
+      }
+      const result = await repository.delete({id: id});
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json(error);
