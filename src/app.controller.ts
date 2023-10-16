@@ -44,4 +44,10 @@ export class AppController {
   createTableData(@Res() res: Response, @Param('table_name') tableName: string, @Body() data) {
     return this.appService.createData(res, tableName, data);
   }
+
+  @PassAuth()
+  @Post('table/:table_name/:id')
+  updateTable(@Res() res: Response, @Param('table_name') tableName: string,@Param('id') id: number, @Body() data) {
+    return this.appService.updateData(res, tableName, data, id);
+  }
 }
