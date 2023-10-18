@@ -44,4 +44,15 @@ export class AppController {
   createTableData(@Res() res: Response, @Param('table_name') tableName: string, @Body() data) {
     return this.appService.createData(res, tableName, data);
   }
+
+  @PassAuth()
+  @Post('table/:table_name/update/:id')
+  updateTableData(@Res() res: Response, @Param('table_name') tableName: string,@Param('id') id: number, @Body() data) {
+    return this.appService.updateData(res, tableName, data, id);
+  }
+  @PassAuth()
+  @Post('table/:table_name/delete/:id')
+  deleteTableData(@Res() res: Response, @Param('table_name') tableName: string,@Param('id') id: number) {
+    return this.appService.deleteData(res, tableName, id);
+  }
 }
