@@ -39,7 +39,7 @@ export class PageService {
             pages.forEach(element => {
                 element.content = JSON.parse(element.content);
             });
-            return res.status(200).json(pages);
+            return res.status(200).send(pages);
         }
         else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
     }
@@ -54,10 +54,17 @@ export class PageService {
     }
 
     async createPage(data: PageDto, res) {
+        let msg: string;
+        !data.content[0] == true ? msg = 'Sayfa içeriği boş olamaz.' :
+            data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
+        if (msg) return res.send({ message: msg })
+
         const components = [];
         for (let i = 0; i < data.content.length; i++) {
             const component = await this.componentRepository.findOne({ where: { id: data.content[i]['component_id'] } });
+            console.log(component)
             if (component) {
+                if (!data.content[i]['component_id'] || !data.content[i]['value']) { return res.send({ message: 'Content yanlış formatta gönderildi!', content: data.content[i] }); }
                 components.push(data.content[i]);
             }
             else
@@ -81,6 +88,12 @@ export class PageService {
     }
 
     async setPage(page_id: number, data: UpdatePageDto, res) {
+
+        let msg: string;
+        !data.content[0] == true ? msg = 'Sayfa içeriği boş olamaz.' :
+            data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
+        if (msg) return res.send({ message: msg })
+
         const page = await this.pageRepository.findOne({ where: { id: page_id } });
         if (!page) return res.status(404).send({ message: 'Sayfa bulunamadı.' });
 
@@ -97,6 +110,7 @@ export class PageService {
         for (let i = 0; i < data.content.length; i++) {
             const component = await this.componentRepository.findOne({ where: { id: data.content[i]['component_id'] } });
             if (component) {
+                if (!data.content[i]['component_id'] || !data.content[i]['value']) { return res.send({ message: 'Content yanlış formatta gönderildi!', content: data.content[i] }); }
                 components.push(data.content[i]);
             }
             else
@@ -405,21 +419,21 @@ export class PageService {
         if (check) { return res.status(200).json(componentFile); }
         return res.status(400);
     }
-
+ 
     async getComponentFiles(res) {
         const componentFiles = await this.componentFileRepository.find();
         if (componentFiles.length > 0) { return res.status(200).json(componentFiles); }
         else return res.status(404);
     }
-
-
+ 
+ 
     async getComponentFile(file_id: number, res) {
         const componentFile = await this.componentFileRepository.findOne({ where: { id: file_id } });
         if (componentFile) { return res.status(200).json(componentFile); }
         else return res.status(404);
     }
-
-
+ 
+ 
     async setPageComponent(component_id: number, data: PageComponentDto, res) {
         const pageComponent = await this.pageComponentRepository.findOne({ where: { id: component_id } });
         if (pageComponent) {
@@ -430,7 +444,7 @@ export class PageService {
         }
         else return res.status(404);
     }
-
+ 
     async setComponent(component_id: number, data: ComponentDto, res) {
         const component = await this.componentRepository.findOne({ where: { id: component_id } });
         if (component) {
@@ -441,7 +455,7 @@ export class PageService {
         }
         else return res.status(404);
     }
-
+ 
     async setComponentFile(file_id: number, data: ComponentFileDto, res) {
         const componentFile = await this.componentFileRepository.findOne({ where: { id: file_id } });
         if (componentFile) {
@@ -452,7 +466,7 @@ export class PageService {
         }
         else return res.status(404);
     }
-
+ 
     async deleteComponentFile(file_id: number, res) {
         const componentFile = await this.componentFileRepository.findOne({ where: { id: file_id } });
         if (componentFile) {
@@ -462,6 +476,6 @@ export class PageService {
         }
         else return res.status(404);
     }
-
+ 
     */
 }
