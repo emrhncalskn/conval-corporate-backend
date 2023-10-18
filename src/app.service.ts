@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Response } from 'express';
 import { Connection } from 'typeorm';
 import { config } from 'dotenv';
+import { GeneralGetDto } from './app.dto';
 
 config();
 
@@ -28,6 +29,22 @@ export class AppService {
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json(error);
+    }
+    return;
+  }
+
+  async findTableDataWithWhere(res: Response, tableName: string, dto : GeneralGetDto) {
+    try {
+      const repository = this.connection.getRepository(tableName);
+      let where : string = "";
+      dto.body.forEach(element => {
+        where += element.key + " = '" + element.value + "' AND ";
+      });
+      where = where.substring(0, where.length - 4);
+      const result = await repository.createQueryBuilder(tableName).where(where).getMany();
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error.sqlMessage);
     }
     return;
   }
