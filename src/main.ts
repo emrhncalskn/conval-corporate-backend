@@ -46,6 +46,7 @@ async function bootstrap() {
   app.setViewEngine('hbs');
 
   const listener = await app.listen(3006);
-  console.log(`Uygulama ':${await app.getUrl()}' adresinde çalışıyor.`);
+  console.log(`Uygulama '${await app.getUrl()}' adresinde çalışıyor.`);
+  console.log(`Swagger '${await app.getUrl()}/api' adresinde çalışıyor.`);
 }
 bootstrap();

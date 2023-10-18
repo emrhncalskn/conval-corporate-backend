@@ -14,6 +14,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { GeneralsModule } from './generals/generals.module';
 import { MenuModule } from './menu/menu.module';
 import { MediaModule } from './media/media.module';
+import { PageModule } from './page/page.module';
 
 @Module({
   imports: [TypeOrmModule,
@@ -35,7 +36,7 @@ import { MediaModule } from './media/media.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule],
+    UsersModule, BlogsModule, PagesModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule,PageModule],
   controllers: [AppController],
   providers: [AppService],
 })
