@@ -150,7 +150,7 @@ export class PageService {
             if (checkDelete) { return res.status(200).json({ message: "Sayfa ve sayfaya bağlı componentler silindi." }); }
             else return res.status(400).send({ message: 'Sayfa silinirken hata oluştu.' });
         }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
     }
     // --------------------------------------------------------------------------------------------------------------
 
@@ -158,13 +158,13 @@ export class PageService {
     async getPageComponents(res) {
         const pageComponents = await this.pageComponentRepository.find();
         if (pageComponents.length > 0) { return res.status(200).json(pageComponents); }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Sayfa componenti bulunamadı.' });
     }
 
     async getPageComponent(component_id: number, res) {
         const pageComponent = await this.pageComponentRepository.findOne({ where: { id: component_id } });
         if (pageComponent) { return res.status(200).json(pageComponent); }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Sayfa componenti bulunamadı.' });
     }
 
     async createPageComponent(data: PageComponentDto) {
@@ -324,7 +324,7 @@ export class PageService {
     async getComponentTypes(res) {
         const componentTypes = await this.componentTypeRepository.find();
         if (componentTypes.length > 0) { return res.status(200).json(componentTypes); }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Component tipi bulunamadı.' });
     }
 
     async getComponentType(type_id: number, res) {
@@ -369,13 +369,13 @@ export class PageService {
     async getComponents(res) {
         const components = await this.componentRepository.find();
         if (components.length > 0) { return res.status(200).json(components); }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Component bulunamadı.' });
     }
 
     async getComponent(component_id: number, res) {
         const component = await this.componentRepository.findOne({ where: { id: component_id } });
         if (component) { return res.status(200).json(component); }
-        else return res.status(404);
+        else return res.status(404).send({ message: 'Component bulunamadı.' });
     }
 
     async createComponent(data: ComponentDto, res) {
