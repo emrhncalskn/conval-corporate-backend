@@ -62,7 +62,6 @@ export class PageService {
         const components = [];
         for (let i = 0; i < data.content.length; i++) {
             const component = await this.componentRepository.findOne({ where: { id: data.content[i]['component_id'] } });
-            console.log(component)
             if (component) {
                 if (!data.content[i]['component_id'] || !data.content[i]['value']) { return res.send({ message: 'Content yanlış formatta gönderildi!', content: data.content[i] }); }
                 components.push(data.content[i]);
@@ -90,8 +89,7 @@ export class PageService {
     async setPage(page_id: number, data: UpdatePageDto, res) {
 
         let msg: string;
-        !data.content[0] == true ? msg = 'Sayfa içeriği boş olamaz.' :
-            data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
+        data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
         if (msg) return res.send({ message: msg })
 
         const page = await this.pageRepository.findOne({ where: { id: page_id } });

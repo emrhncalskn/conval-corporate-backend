@@ -16,6 +16,7 @@ export class UpdatePageDto {
     title: string;
     @ApiProperty()
     slug: string;
+    @ApiProperty({ default: [{ component_id: 0, value: 'string' }] })
     content: string;
     @ApiProperty()
     config_id: number;
