@@ -282,7 +282,7 @@ export class PageService {
     }
 
     async getPageComponentsIndex(page_id: number, res) {
-        const index = await this.pageComponentRepository.find({ where: { page_id: page_id }, select: ['component_id', 'value', 'index'] });
+        const index = await this.pageComponentRepository.find({ where: { page_id: page_id }, select: ['component_id', 'value', 'index'], order: { index: 'ASC' } });
         if (!index && index.length < 1) { return res.send({ message: 'Sayfa componentleri bulunamadı.' }) }
         return res.send(index);
     }
