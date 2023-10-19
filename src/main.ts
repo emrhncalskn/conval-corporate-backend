@@ -36,6 +36,7 @@ async function bootstrap() {
       'https://conval-test.cosmostest.tech',
       'https://conval-test.cosmostest.tech:4006',
       'https://conval-admin.cosmostest.tech',
+      'https://conval-group-education-p39cgg992-uguryasa.vercel.app/'
     ],
     methods: ['GET', 'POST'],
     credentials: true,
