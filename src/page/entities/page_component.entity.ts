@@ -12,6 +12,8 @@ export class PageComponent {
     component_id: number;
     @Column()
     value: string;
+    @Column()
+    index: number;
 
     @ManyToOne(() => Page, page => page.page_component)
     @JoinColumn({ name: 'page_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_pc_page_id' })

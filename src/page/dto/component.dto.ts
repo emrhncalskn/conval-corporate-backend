@@ -7,6 +7,13 @@ export class ComponentDto {
     type_id: number;
 }
 
+export class PageComponentIndexDto {
+    @ApiProperty()
+    component_id: number;
+    @ApiProperty()
+    index: number;
+}
+
 export class ComponentTypeDto {
     @ApiProperty()
     name: string;

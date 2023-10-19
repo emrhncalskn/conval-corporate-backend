@@ -64,7 +64,7 @@ export class PageService {
 
     async createPage(data: PageDto, res) {
         let msg: string;
-        !data.content[0] == true ? msg = 'Sayfa içeriği boş olamaz.' :
+        !data.content || !data.content[0] == true ? msg = 'Sayfa içeriği boş olamaz.' :
             data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
         if (msg) return res.send({ message: msg })
 
@@ -188,6 +188,7 @@ export class PageService {
         const pageComponent = await this.pageComponentRepository.findOne({ where: { id: component_id } });
         const page = await this.pageRepository.findOne({ where: { id: data.page_id } });
         const component = await this.componentRepository.findOne({ where: { id: data.component_id } });
+
         let msg: string;
         !page ? msg = 'Sayfa bulunamadı.' :
             !pageComponent ? msg = 'Sayfa componenti bulunamadı.' :
@@ -279,6 +280,24 @@ export class PageService {
         }
         else return res.status(404).send({ msg });
     }
+
+    async getPageComponentsIndex(page_id: number, res) {
+        const index = await this.pageComponentRepository.find({ where: { page_id: page_id }, select: ['component_id', 'value', 'index'] });
+        if (!index && index.length < 1) { return res.send({ message: 'Sayfa componentleri bulunamadı.' }) }
+        return res.send(index);
+    }
+
+    async setPageComponentIndex(page_id: number, component_id: number, index: number, res) {
+        const pageComponent = await this.pageComponentRepository.findOne({ where: { page_id: page_id, id: component_id } });
+        if (pageComponent) {
+            pageComponent.index = index;
+            const check = await this.pageComponentRepository.update(component_id, pageComponent);
+            if (check) { return res.status(200).send({ message: 'Sayfa componenti indexi başarı ile güncellendi.' }); }
+            else return res.status(400).send({ message: 'Sayfa componenti indexi güncellenirken hata oluştu.' });
+        }
+        else return res.status(404).send({ message: 'Sayfa componenti bulunamadı.' });
+    }
+
     // --------------------------------------------------------------------------------------------------------------
 
     // Page Config

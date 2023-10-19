@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PageComponentDto, PageConfigDto, PageDto, UpdatePageDto } from './dto/page.dto';
 import { PageService } from './page.service';
-import { ComponentDto, ComponentTypeDto } from './dto/component.dto';
+import { ComponentDto, PageComponentIndexDto, ComponentTypeDto } from './dto/component.dto';
 import { PassAuth } from 'src/auth/guards/pass-auth.guard';
 
 @PassAuth()
@@ -104,6 +104,17 @@ export class PageController {
   async deletePageComponentById(@Param('pagecomponent_id') pagecomponent_id: number, @Res() res) {
     return await this.pageService.deletePageComponent(pagecomponent_id, res);
   }
+
+  @Get('pagecomponents/index/:page_id')
+  async getPageComponentsIndex(@Param('page_id') page_id: number, @Res() res) {
+    return await this.pageService.getPageComponentsIndex(page_id, res);
+  }
+
+  @Post('pagecomponents/index/:page_id')
+  async setPageComponentsIndex(@Param('page_id') page_id: number, @Body() data: PageComponentIndexDto, @Res() res) {
+    return await this.pageService.setPageComponentIndex(page_id, data.component_id, data.index, res);
+  }
+
 
   // -------------------------------------------------------------------------------------------
 
