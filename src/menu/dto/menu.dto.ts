@@ -1,10 +1,5 @@
 import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
 
-class MenuDto {
-    @ApiProperty({ type: 'number' })
-    id: number;
-}
-
 export class CreateMenuDto {
     id: number;
     @ApiProperty()
@@ -15,8 +10,6 @@ export class CreateMenuDto {
     slug: string;
     @ApiProperty()
     menu_belong_id: number;
-    @ApiProperty({ type: [MenuDto] })
-    page_belongs: MenuDto[];
     @ApiProperty()
     route: string;
     @ApiProperty()
@@ -31,10 +24,6 @@ export class UpdateMenuDto {
     type_id: number;
     @ApiProperty()
     slug: string;
-    @ApiProperty({ type: [MenuDto] })
-    page_belongs: MenuDto[];
-    @ApiProperty()
-
     @ApiProperty()
     route: string;
     @ApiProperty()

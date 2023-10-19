@@ -14,8 +14,6 @@ export class Menu {
     @Column({ nullable: true })
     menu_belong_id: number; //sub-menu
     @Column({ type: 'text', nullable: true })
-    page_belongs: string;
-    @Column({ type: 'text', nullable: true })
     route: string;
     @Column({ default: 0 })
     status: number;

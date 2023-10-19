@@ -1,6 +1,4 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { PageExtra } from '../../pages/entities/pages_extra.entity';
-import { Pages } from '../../pages/entities/pages.entity';
 import { Roles } from '../../permissions/entities/roles.entity';
 import { Blogs } from '../../blogs/entities/blogs.entity';
 
@@ -39,10 +37,4 @@ export class Users extends BaseEntity {
 
     @OneToMany(() => Blogs, blogs => blogs.author)
     blogs: Blogs[];
-
-    @OneToMany(() => Pages, pages => pages.author)
-    pages: Pages[];
-
-    @OneToMany(() => PageExtra, page_extra => page_extra.author)
-    page_extras: PageExtra[];
 }

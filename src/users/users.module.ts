@@ -8,13 +8,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Images } from '../media/entities/images.entity';
 import { Permissions } from 'src/permissions/entities/permissions.entity';
 import { Roles } from 'src/permissions/entities/roles.entity';
-import { PageExtra } from 'src/pages/entities/pages_extra.entity';
 
 @Module({
   imports: [MulterModule.register({
     dest: './assets/images',
   }),
-  TypeOrmModule.forFeature([Users, PageExtra, Images, Permissions, Roles]),
+  TypeOrmModule.forFeature([Users, Images, Permissions, Roles]),
   ],
   providers: [UsersService, JwtService],
   controllers: [UsersController]
