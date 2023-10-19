@@ -44,6 +44,15 @@ export class PageService {
         else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
     }
 
+    async getPageBySlug(slug: string, res) {
+        const page = await this.pageRepository.findOne({ where: { slug: slug }, relations: { page_config: true, page_component: true } });
+        if (page) {
+            page.content = JSON.parse(page.content);
+            return res.status(200).json(page);
+        }
+        else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
+    }
+
     async getPage(page_id: number, res) {
         const page = await this.pageRepository.findOne({ where: { id: page_id }, relations: { page_config: true, page_component: true } });
         if (page) {

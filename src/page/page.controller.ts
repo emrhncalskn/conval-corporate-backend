@@ -19,6 +19,12 @@ export class PageController {
     return await this.pageService.getPages(res);
   }
 
+  @Get('get/byslug/:slug')
+  async getPageBySlug(@Param('slug') slug: string, @Res() res) {
+    return await this.pageService.getPageBySlug(slug, res);
+
+  }
+
   @Get('get/:page_id')
   async getPageById(@Param('page_id') page_id: number, @Res() res) {
     return await this.pageService.getPage(page_id, res);
