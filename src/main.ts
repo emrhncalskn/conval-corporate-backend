@@ -30,11 +30,14 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:4006',
+      'http://localhost:5006',
       'http://192.168.1.100:3000',
       'http://192.168.1.100:4006',
+      'http://192.168.1.100:5006',
       'https://conval.labconnect.me',
       'https://conval-test.cosmostest.tech',
       'https://conval-test.cosmostest.tech:4006',
+      'https://conval-test.cosmostest.tech:5006',
       'https://conval-admin.cosmostest.tech',
       'https://conval-group-education-p39cgg992-uguryasa.vercel.app/'
     ],
