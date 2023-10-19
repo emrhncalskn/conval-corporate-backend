@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { config } from 'dotenv';
 import { Response } from 'express';
 import { PassAuth } from './auth/guards/pass-auth.guard';
+import { GeneralGetDto } from './app.dto';
 
 config()
 
@@ -37,6 +38,11 @@ export class AppController {
   @Get('table/:table_name')
   getTableData(@Res() res: Response, @Param('table_name') tableName: string) {
     return this.appService.findTableData(res, tableName);
+  }
+
+  @Post('table/:table_name/where')
+  getTableDataWithWhere(@Res() res: Response, @Param('table_name') tableName: string, @Body() dto: GeneralGetDto) {
+    return this.appService.findTableDataWithWhere(res, tableName, dto);
   }
 
   @PassAuth()
