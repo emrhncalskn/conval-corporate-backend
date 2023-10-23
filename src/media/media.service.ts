@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UploadPhotoDto } from './dto/photo.dto';
 import * as fs from 'fs';
 import * as fsPromises from 'fs/promises';
+import path from 'path';
 
 @Injectable()
 export class MediaService {
@@ -18,11 +19,21 @@ export class MediaService {
         let images = [];
 
         try {
-            const files = await fsPromises.readdir(`./assets/images/uploads/${type}`);
+            let files = [];
+            if(type == 'all' || type == 'All' || type == 'ALL'){
+                files = await fsPromises.readdir(`./assets/images/uploads/`, { recursive : true , encoding : 'utf-8' });
+                files.forEach(file => {
+                    const new_path = file.replace(/\\/g, '/'); // Burada da \\ getiriyordu onları / ile değiştirdik
+                    if(new_path.split('/').length < 2) {return;} //  /xx/xx.png şeklinde olanları gostersin diye tek '/' olanları göstermemesını sagladık
+                    images.push({ img: `/${new_path}` });
+                });
+            }else{
+                files = await fsPromises.readdir(`./assets/images/uploads/${type}`);
+                files.forEach(file => {
+                    images.push({ img: `/${type}/${file}` });
+                });
+            }
 
-            files.forEach(file => {
-                images.push({ img: `/${type}/${file}` });
-            });
 
             return { images };
         } catch (err) {

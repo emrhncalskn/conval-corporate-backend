@@ -5,7 +5,7 @@ export class PageDto {
     title: string;
     @ApiProperty()
     slug: string;
-    @ApiProperty({ default: [{ component_id: 0, value: 'string' }] })
+    @ApiProperty({ default: [{ component_id: 0, value: 'string', index : 0 }] })
     content: string;
     @ApiProperty()
     config_id: number;

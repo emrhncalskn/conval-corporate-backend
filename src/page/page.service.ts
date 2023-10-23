@@ -36,9 +36,15 @@ export class PageService {
     async getPages(res) {
         const pages = await this.pageRepository.find({ relations: { page_config: true, page_component: true } });
         if (pages.length > 0) {
-            pages.forEach(element => {
-                element.content = JSON.parse(element.content);
-            });
+            try {                                                                                           // try catche alıyoruz ki parse ederken bir sorun yasarsa isleme devam etsın hatayoı yakalayıp.
+                pages.forEach(element => {
+                    if(element.content != null && element.content != undefined && element.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+                        element.content = JSON.parse(element.content);
+                    }
+                });
+            } catch (error) {
+                console.log(error.message);           
+            }
             return res.status(200).send(pages);
         }
         else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
@@ -47,7 +53,9 @@ export class PageService {
     async getPageBySlug(slug: string, res) {
         const page = await this.pageRepository.findOne({ where: { slug: slug }, relations: { page_config: true, page_component: true } });
         if (page) {
-            page.content = JSON.parse(page.content);
+            if(page.content != null && page.content != undefined && page.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+                page.content = JSON.parse(page.content);
+            }
             return res.status(200).json(page);
         }
         else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
@@ -56,7 +64,9 @@ export class PageService {
     async getPage(page_id: number, res) {
         const page = await this.pageRepository.findOne({ where: { id: page_id }, relations: { page_config: true, page_component: true } });
         if (page) {
-            page.content = JSON.parse(page.content);
+            if(page.content != null && page.content != undefined && page.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+                page.content = JSON.parse(page.content);
+            }
             return res.status(200).json(page);
         }
         else return res.status(404).send({ message: 'Sayfa bulunamadı.' });
@@ -242,7 +252,7 @@ export class PageService {
     async setPageComponents(components: any[], page: Page) {
         let page_comps: PageComponent[] = [];
         components.forEach(async element => {
-            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value });
+            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value , index: element.index});
             page_comps.push(pageComponent);
         });
         const result = await this.pageComponentRepository.save(page_comps);
