@@ -16,12 +16,19 @@ export class PageComponent {
     index: number;
 
     @ManyToOne(() => Page, page => page.page_component)
-    @JoinColumn({ name: 'page_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_pc_page_id' })
+    @JoinColumn({ 
+        name: 'page_id', 
+        referencedColumnName: 'id', 
+        foreignKeyConstraintName: 'fk_pc_page_id' 
+    })
     page: Page;
 
-    // ManyToOne olmalı ve fk burada tanımlanmalı ( component_id burada) [DONE]
     @ManyToOne(() => Component, component => component.page_components)
-    @JoinColumn({ name: 'component_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_pc_component_id' })
+    @JoinColumn({ 
+        name: 'component_id', 
+        referencedColumnName: 'id', 
+        foreignKeyConstraintName: 'fk_pc_component_id' 
+    })
     component: Component;
 
 }

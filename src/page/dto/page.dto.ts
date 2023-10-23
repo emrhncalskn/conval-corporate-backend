@@ -16,7 +16,7 @@ export class UpdatePageDto {
     title: string;
     @ApiProperty()
     slug: string;
-    @ApiProperty({ default: [{ component_id: 0, value: 'string' }] })
+    @ApiProperty({ default: [{ component_id: 0, value: 'string', index : 0 }] })
     content: string;
     @ApiProperty()
     config_id: number;
@@ -27,8 +27,6 @@ export class PageConfigDto {
     title: string;
     @ApiProperty()
     col_size: number;
-    @ApiProperty()
-    page_id: number;
 }
 
 export class PageComponentDto {

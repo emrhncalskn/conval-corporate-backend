@@ -17,6 +17,8 @@ export class PageComponentIndexDto {
 export class ComponentTypeDto {
     @ApiProperty()
     name: string;
+    @ApiProperty()
+    input_type: string;
 }
 
 export class ComponentFileDto {

@@ -107,9 +107,9 @@ export class PageService {
 
     async setPage(page_id: number, data: UpdatePageDto, res) {
 
-        let msg: string;
-        data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
-        if (msg) return res.send({ message: msg })
+        //let msg: string;
+        //data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
+        //if (msg) return res.send({ message: msg })
 
         const page = await this.pageRepository.findOne({ where: { id: page_id } });
         if (!page) return res.status(404).send({ message: 'Sayfa bulunamadı.' });
@@ -121,6 +121,16 @@ export class PageService {
             if (updatePage) return res.status(200).json(newPage);
             else return res.status(400).send({ message: 'Sayfa güncellenirken hata oluştu.' });
         }
+
+        //Page'e ait componentler siliniyor
+        page.content = null;
+        const page_components = await this.pageComponentRepository.find({ where: { page_id: page_id } });
+        page_components.forEach(async element => {
+            const reslt = await this.pageComponentRepository.delete(element.id);
+            if(!reslt){
+               res.status(400).send({ message: 'Sayfa componentleri silinirken hata oluştu.' }); 
+            }
+        });
 
         //page'e yeni componentler ekler
         const components = [];
@@ -139,7 +149,7 @@ export class PageService {
             return res.status(400).send({ message: 'Sayfa güncellenirken hata oluştu.' });
         }
 
-        data.content = JSON.stringify(JSON.parse(page.content).concat(data.content));
+        data.content = JSON.stringify(data.content);
 
         const updateContent = await this.pageRepository.update(page_id, data);
         if (updateContent) {
@@ -324,10 +334,7 @@ export class PageService {
     }
 
     async createPageConfig(data: PageConfigDto, res) {
-        const page = await this.pageRepository.findOne({ where: { id: data.page_id } });
-        if (!page) return res.status(404).json({ message: 'Sayfa bulunamadı.' });
         const pageConfig = await this.pageConfigRepository.create(data);
-        pageConfig.page = page;
         const check = await this.pageConfigRepository.save(pageConfig);
         if (check) { return res.status(200).json(pageConfig); }
         return res.status(400).send({ message: 'Sayfa ayarı oluştururken hata oluştu.' });

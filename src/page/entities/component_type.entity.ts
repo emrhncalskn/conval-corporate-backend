@@ -7,7 +7,8 @@ export class ComponentType {
     id: number;
     @Column()
     name: string;
-
+    @Column()
+    input_type: string;
     //OneToMany olmalı ve fk componentte tanımlanmalı [DONE]
     @OneToMany(() => Component, component => component.component_type)
     component: Component[];
