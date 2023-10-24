@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Functions } from 'services/functions/functions';
-import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Permission } from 'src/permissions/decorators/permission.decorator';
-import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { Functions } from '../../services/functions/functions';
+import { JwtGuard } from '../../src/auth/guards/jwt-auth.guard';
+import { Permission } from '../../src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from '../../src/permissions/guards/permission.guard';
 import { SetUserDto, SetUserRoleDto } from './dto/set-user.dto';
 import { UsersService } from './users.service';
 

@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Encryptor } from 'services/encyrption/encyrpt-data';
-import { Roles } from 'src/permissions/entities/roles.entity';
+import { Encryptor } from '../../services/encyrption/encyrpt-data';
+import { Roles } from '../../src/permissions/entities/roles.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetUserDto } from './dto/set-user.dto';

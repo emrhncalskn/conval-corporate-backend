@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Users } from 'src/users/entities/users.entity';
-import { UsersService } from 'src/users/users.service';
-import { Encryptor } from 'services/encyrption/encyrpt-data';
+import { Users } from '../../src/users/entities/users.entity';
+import { UsersService } from '../../src/users/users.service';
+import { Encryptor } from '../../services/encyrption/encyrpt-data';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from '../../src/users/dto/create-user.dto';
 
 const encrypt = new Encryptor;
 

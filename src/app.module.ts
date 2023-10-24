@@ -14,10 +14,14 @@ import { GeneralsModule } from './generals/generals.module';
 import { MenuModule } from './menu/menu.module';
 import { MediaModule } from './media/media.module';
 import { PageModule } from './page/page.module';
+import { MailModule } from './mail/mail.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [TypeOrmModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true, // no need to import into other modules
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -35,8 +39,8 @@ import { PageModule } from './page/page.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule],
+    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule, MailModule,MailerModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,ConfigService],
 })
 export class AppModule { }

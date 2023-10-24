@@ -1,10 +1,10 @@
 import { ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/users/entities/users.entity';
+import { Users } from '../../../src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { Permissions } from '../entities/permissions.entity';
-import { Functions } from 'services/functions/functions';
+import { Functions } from '../../../services/functions/functions';
 import { JwtService } from '@nestjs/jwt';
 
 const func = new Functions;

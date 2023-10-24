@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GeneralDto } from './dto/general.dto';
-import { Images } from 'src/media/entities/images.entity';
-import { UploadPhotoDto } from 'src/media/dto/photo.dto';
+import { Images } from '../../src/media/entities/images.entity';
+import { UploadPhotoDto } from '../../src/media/dto/photo.dto';
 import { Generals } from './entities/generals.entity';
-import { Functions } from 'services/functions/functions';
+import { Functions } from '../../services/functions/functions';
 
 const func = new Functions;
 

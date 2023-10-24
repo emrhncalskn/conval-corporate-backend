@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { PassAuth } from 'src/auth/guards/pass-auth.guard';
-import { Permission } from 'src/permissions/decorators/permission.decorator';
-import { PermissionGuard } from 'src/permissions/guards/permission.guard';
+import { PassAuth } from '../../src/auth/guards/pass-auth.guard';
+import { Permission } from '../../src/permissions/decorators/permission.decorator';
+import { PermissionGuard } from '../../src/permissions/guards/permission.guard';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { MenuService } from './menu.service';
 

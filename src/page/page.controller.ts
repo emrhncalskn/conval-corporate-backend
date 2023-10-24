@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PageComponentDto, PageConfigDto, PageDto, UpdatePageDto } from './dto/page.dto';
 import { PageService } from './page.service';
 import { ComponentDto, PageComponentIndexDto, ComponentTypeDto } from './dto/component.dto';
-import { PassAuth } from 'src/auth/guards/pass-auth.guard';
+import { PassAuth } from '../../src/auth/guards/pass-auth.guard';
 
 @PassAuth()
 @ApiBearerAuth()

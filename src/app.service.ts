@@ -106,6 +106,6 @@ export class AppService {
 
   healthCheck(res: Response): string {
     res.status(200).json('OK');
-    return;
+    return "Ok.";
   }
 }

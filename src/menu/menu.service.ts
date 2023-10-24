@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Menu } from './entities/menu.entity';
 import { Repository } from 'typeorm';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
-import { Functions } from 'services/functions/functions';
+import { Functions } from '../../services/functions/functions';
 
 const func = new Functions;
 

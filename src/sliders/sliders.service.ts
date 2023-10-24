@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Sliders } from './entities/sliders.entity';
 import { Repository } from 'typeorm';
 import { CreateSliderDto } from './dto/create-slider.dto';
-import { Images } from 'src/media/entities/images.entity';
-import { UploadPhotoDto } from 'src/media/dto/photo.dto';
-import { Functions } from 'services/functions/functions';
+import { Images } from '../../src/media/entities/images.entity';
+import { UploadPhotoDto } from '../../src/media/dto/photo.dto';
+import { Functions } from '../../services/functions/functions';
 import { Response } from 'express';
 import { SetSliderDto } from './dto/slider.dto';
 

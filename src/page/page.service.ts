@@ -9,7 +9,7 @@ import { Page } from './entities/page.entity';
 import { PageComponent } from './entities/page_component.entity';
 import { PageConfig } from './entities/page_config.entity';
 import { ComponentDto, ComponentFileDto, ComponentTypeDto } from './dto/component.dto';
-import { Functions } from 'services/functions/functions';
+import { Functions } from '../../services/functions/functions';
 
 const func = new Functions;
 

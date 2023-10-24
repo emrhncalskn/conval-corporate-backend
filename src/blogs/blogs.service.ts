@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Functions } from 'services/functions/functions';
-import { Images } from 'src/media/entities/images.entity';
+import { Functions } from '../../services/functions/functions';
+import { Images } from '../../src/media/entities/images.entity';
 import { Repository } from 'typeorm';
 import { CreateBlogDto } from './dto/blog.dto';
 import { Blogs } from './entities/blogs.entity';

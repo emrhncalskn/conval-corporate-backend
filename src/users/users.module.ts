@@ -6,8 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { JwtService } from '@nestjs/jwt';
 import { Images } from '../media/entities/images.entity';
-import { Permissions } from 'src/permissions/entities/permissions.entity';
-import { Roles } from 'src/permissions/entities/roles.entity';
+import { Permissions } from '../../src/permissions/entities/permissions.entity';
+import { Roles } from '../../src/permissions/entities/roles.entity';
 
 @Module({
   imports: [MulterModule.register({
