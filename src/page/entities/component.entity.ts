@@ -11,14 +11,18 @@ export class Component {
     title: string;
     @Column()
     type_id: number;
+    @Column({ type: 'text' })
+    css: string;
 
-    //OneToOne olmalı ve fk PageComponent Entity de tanımlanmalı [DONE]
-    @OneToOne(() => PageComponent, page_component => page_component.component)
-    page_component: PageComponent;
+    @OneToMany(() => PageComponent, page_component => page_component.component)
+    page_component: PageComponent[];
 
-    //ManyToMany olmalı ve fk burada tanımlanmalı ( type_id burada ) [DONE]
     @ManyToOne(() => ComponentType, component_type => component_type.component)
-    @JoinColumn({ name: 'type_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_c_type_id' })
+    @JoinColumn({ 
+        name: 'type_id', 
+        referencedColumnName: 'id', 
+        foreignKeyConstraintName: 'fk_c_type_id' 
+    })
     component_type: ComponentType;
 
     @OneToMany(() => ComponentFile, component_file => component_file.component)

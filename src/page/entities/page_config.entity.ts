@@ -7,8 +7,8 @@ export class PageConfig {
     id: number;
     @Column()
     title: string;
-    @Column()
-    col_size: number;
+    @Column({ type: 'text' })
+    css: string;
     @OneToMany(() => Page, page => page.page_config)
     pages: Page[];
 }

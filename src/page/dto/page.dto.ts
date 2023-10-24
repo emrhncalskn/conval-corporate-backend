@@ -26,7 +26,7 @@ export class PageConfigDto {
     @ApiProperty()
     title: string;
     @ApiProperty()
-    col_size: number;
+    css: string;
 }
 
 export class PageComponentDto {

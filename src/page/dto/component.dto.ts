@@ -5,6 +5,8 @@ export class ComponentDto {
     title: string;
     @ApiProperty()
     type_id: number;
+    @ApiProperty()
+    css: string;
 }
 
 export class PageComponentIndexDto {
