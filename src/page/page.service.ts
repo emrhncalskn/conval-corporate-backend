@@ -198,7 +198,7 @@ export class PageService {
         const pageComponent = await this.pageComponentRepository.create(data);
         const check = await this.pageComponentRepository.save(pageComponent);
         const page = await this.pageRepository.findOne({ where: { id: data.page_id } });
-        page.content = JSON.stringify(JSON.parse(page.content).concat({ component_id: data.component_id, value: data.value }));
+        page.content = JSON.stringify(JSON.parse(page.content).concat({ component_id: data.component_id, value: data.value, index: data.index, css: data.css }));
         const updatePage = await this.pageRepository.update(data.page_id, page);
         if (check && updatePage) { return pageComponent; }
         return 400;
@@ -250,7 +250,7 @@ export class PageService {
             const updateOldPage = await this.pageRepository.update(oldPage.id, oldPage); //Eski sayfayı günceller
             const updatePageComponent = await this.pageComponentRepository.update(component_id, data); // Sayfa componentlerini günceller
             pageComponent.value = data.value;
-            page.content = JSON.stringify(JSON.parse(page.content).concat({ component_id: pageComponent.component_id, value: pageComponent.value }));
+            page.content = JSON.stringify(JSON.parse(page.content).concat({ component_id: pageComponent.component_id, value: pageComponent.value, index: pageComponent.index, css: pageComponent.css }));
             const updatePage = await this.pageRepository.update(data.page_id, page); // Yeni sayfayı günceller
             if (updateOldPage && updatePage && updatePageComponent) return res.status(200).json({ message: 'Sayfa componenti başarı ile güncellendi.', newPage: page, oldPage: oldPage });
             else return res.status(400).json({ message: 'Sayfa componenti güncellenirken hata oluştu.' });
@@ -262,7 +262,7 @@ export class PageService {
     async setPageComponents(components: any[], page: Page) {
         let page_comps: PageComponent[] = [];
         components.forEach(async element => {
-            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value , index: element.index});
+            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value , index: element.index, css: element.css});
             page_comps.push(pageComponent);
         });
         const result = await this.pageComponentRepository.save(page_comps);
@@ -302,7 +302,7 @@ export class PageService {
     }
 
     async getPageComponentsIndex(page_id: number, res) {
-        const index = await this.pageComponentRepository.find({ where: { page_id: page_id }, select: ['component_id', 'value', 'index'], order: { index: 'ASC' } });
+        const index = await this.pageComponentRepository.find({ where: { page_id: page_id }, select: ['component_id', 'value', 'index', 'css'], order: { index: 'ASC' } });
         if (!index && index.length < 1) { return res.send({ message: 'Sayfa componentleri bulunamadı.' }) }
         return res.send(index);
     }

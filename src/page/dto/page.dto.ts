@@ -36,4 +36,8 @@ export class PageComponentDto {
     component_id: number;
     @ApiProperty()
     value: string;
+    @ApiProperty()
+    css: string;
+    @ApiProperty()
+    index: number;
 }

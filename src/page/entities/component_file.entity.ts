@@ -14,11 +14,18 @@ export class ComponentFile {
     file_id: number;
 
     @ManyToOne(() => Component, component => component.component_file)
-    @JoinColumn({ name: 'component_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_cf_component_id' })
+    @JoinColumn({ 
+        name: 'component_id', 
+        referencedColumnName: 'id', 
+        foreignKeyConstraintName: 'fk_cf_component_id' 
+    })
     component: Component;
 
     @ManyToOne(() => Component, component => component.component_file)
-    @JoinColumn({ name: 'file_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_cf_file_id' })
+    @JoinColumn({ 
+        name: 'file_id', 
+        referencedColumnName: 'id', 
+        foreignKeyConstraintName: 'fk_cf_file_id' 
+    })
     file: Component;
-    // file_id burada fk tanımlanım relation atılmalı [DONE]
 }

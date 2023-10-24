@@ -4,16 +4,24 @@ import { Component } from "./component.entity";
 
 @Entity('page_component')
 export class PageComponent {
+
     @PrimaryGeneratedColumn()
     id: number;
+
     @Column()
     page_id: number;
+
     @Column()
     component_id: number;
+
     @Column()
     value: string;
+
     @Column()
     index: number;
+
+    @Column({ type: 'text' })
+    css: string;
 
     @ManyToOne(() => Page, page => page.page_component)
     @JoinColumn({ 
