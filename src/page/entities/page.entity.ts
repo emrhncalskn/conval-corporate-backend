@@ -11,6 +11,12 @@ export class Page {
     @Column()
     title: string;
 
+    @Column({ type: 'text', nullable: true })
+    description: string;
+
+    @Column({ nullable: true })
+    image: string;
+
     @Column()
     slug: string;
 
@@ -22,7 +28,7 @@ export class Page {
 
     @OneToMany(() => PageComponent, page_component => page_component.page)
     page_component: PageComponent[];
-    
+
     @ManyToOne(() => PageConfig, page_config => page_config.pages, { cascade: true, onDelete: "SET NULL" })
     @JoinColumn({
         name: 'config_id',

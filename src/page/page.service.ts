@@ -38,12 +38,12 @@ export class PageService {
         if (pages.length > 0) {
             try {                                                                                           // try catche alıyoruz ki parse ederken bir sorun yasarsa isleme devam etsın hatayoı yakalayıp.
                 pages.forEach(element => {
-                    if(element.content != null && element.content != undefined && element.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+                    if (element.content != null && element.content != undefined && element.content != '') {  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
                         element.content = JSON.parse(element.content);
                     }
                 });
             } catch (error) {
-                console.log(error.message);           
+                console.log(error.message);
             }
             return res.status(200).send(pages);
         }
@@ -53,7 +53,7 @@ export class PageService {
     async getPageBySlug(slug: string, res) {
         const page = await this.pageRepository.findOne({ where: { slug: slug }, relations: { page_config: true, page_component: true } });
         if (page) {
-            if(page.content != null && page.content != undefined && page.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+            if (page.content != null && page.content != undefined && page.content != '') {  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
                 page.content = JSON.parse(page.content);
             }
             return res.status(200).json(page);
@@ -64,7 +64,7 @@ export class PageService {
     async getPage(page_id: number, res) {
         const page = await this.pageRepository.findOne({ where: { id: page_id }, relations: { page_config: true, page_component: true } });
         if (page) {
-            if(page.content != null && page.content != undefined && page.content != ''){  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
+            if (page.content != null && page.content != undefined && page.content != '') {  // boş contentlerin kontrolu saglanıyor aksi taktide parse ederken hata patlatıyor.
                 page.content = JSON.parse(page.content);
             }
             return res.status(200).json(page);
@@ -127,8 +127,8 @@ export class PageService {
         const page_components = await this.pageComponentRepository.find({ where: { page_id: page_id } });
         page_components.forEach(async element => {
             const reslt = await this.pageComponentRepository.delete(element.id);
-            if(!reslt){
-               res.status(400).send({ message: 'Sayfa componentleri silinirken hata oluştu.' }); 
+            if (!reslt) {
+                res.status(400).send({ message: 'Sayfa componentleri silinirken hata oluştu.' });
             }
         });
 
@@ -151,6 +151,7 @@ export class PageService {
 
         data.content = JSON.stringify(data.content);
 
+        Object.assign(page, data);
         const updateContent = await this.pageRepository.update(page_id, data);
         if (updateContent) {
             const newPage = await this.pageRepository.findOne({ where: { id: page_id }, relations: { page_component: true } });
@@ -262,7 +263,7 @@ export class PageService {
     async setPageComponents(components: any[], page: Page) {
         let page_comps: PageComponent[] = [];
         components.forEach(async element => {
-            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value , index: element.index, css: element.css});
+            let pageComponent = this.pageComponentRepository.create({ page_id: page.id, component_id: element.component_id, value: element.value, index: element.index, css: element.css });
             page_comps.push(pageComponent);
         });
         const result = await this.pageComponentRepository.save(page_comps);
