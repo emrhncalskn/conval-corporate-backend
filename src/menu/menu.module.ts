@@ -7,9 +7,10 @@ import { MenuType } from './entities/menu_type.entity';
 import { Users } from '../../src/users/entities/users.entity';
 import { Permissions } from '../../src/permissions/entities/permissions.entity';
 import { JwtService } from '@nestjs/jwt';
+import { Language } from 'src/language/entities/language.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Permissions, Users, Menu, MenuType])],
+  imports: [TypeOrmModule.forFeature([Permissions, Users, Menu, MenuType,Language])],
   controllers: [MenuController],
   providers: [MenuService, JwtService],
 })

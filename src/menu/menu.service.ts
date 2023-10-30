@@ -43,7 +43,7 @@ export class MenuService {
     }
 
     async getMenusWithType(slug: string, lang: string) {
-        const menuType = await this.menuTypeRepository.findOne({ where: { slug: slug, lang: lang } });
+        const menuType = await this.menuTypeRepository.findOne({ where: { slug: slug, language_code: lang } });
         if (!menuType) { return { message: 'Böyle bir menü tipi yok!' } }
         const menu = await this.menuRepository.find({ where: { type_id: menuType.id, status: 1 } });
         if (!menu) { return { message: 'Menü yok' } }
