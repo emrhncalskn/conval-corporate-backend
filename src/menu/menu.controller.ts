@@ -33,6 +33,13 @@ export class MenuController {
     return await this.menuService.getMenus();
   }
 
+  @PassAuth()
+  @Permission()
+  @Get('get/allwith/:slug/:lang')
+  async getMenusWithType(@Param('slug') slug: string, @Param('lang') lang: string) {
+    return await this.menuService.getMenusWithType(slug, lang);
+  }
+
   @Permission(39)
   @Post('create')
   async createMenu(@Body() data: CreateMenuDto, @Res() res) {

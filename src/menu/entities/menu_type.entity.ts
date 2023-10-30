@@ -7,6 +7,10 @@ export class MenuType {
     id: number;
     @Column()
     name: string;
+    @Column()
+    slug: string;
+    @Column()
+    lang: string;
 
     @OneToMany(() => Menu, menu => menu.menu_type)
     menu: Menu[];

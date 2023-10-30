@@ -4,6 +4,7 @@ import { Menu } from './entities/menu.entity';
 import { Repository } from 'typeorm';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { Functions } from '../../services/functions/functions';
+import { MenuType } from './entities/menu_type.entity';
 
 const func = new Functions;
 
@@ -12,6 +13,8 @@ export class MenuService {
     constructor(
         @InjectRepository(Menu)
         private menuRepository: Repository<Menu>,
+        @InjectRepository(MenuType)
+        private menuTypeRepository: Repository<MenuType>,
     ) { }
 
     async getMenu(id: number) {
@@ -28,6 +31,21 @@ export class MenuService {
 
     async getMenus() {
         const menu = await this.menuRepository.find({ where: { status: 1 } });
+        if (!menu) { return { message: 'Menü yok' } }
+        const menus = [];
+        for (let i = 0; i < menu.length; i++) {
+            await this.getMenu(menu[i].id).then(res => {
+                menus.push(res);
+            }
+            );
+        }
+        return { menus };
+    }
+
+    async getMenusWithType(slug: string, lang: string) {
+        const menuType = await this.menuTypeRepository.findOne({ where: { slug: slug, lang: lang } });
+        if (!menuType) { return { message: 'Böyle bir menü tipi yok!' } }
+        const menu = await this.menuRepository.find({ where: { type_id: menuType.id, status: 1 } });
         if (!menu) { return { message: 'Menü yok' } }
         const menus = [];
         for (let i = 0; i < menu.length; i++) {
