@@ -16,6 +16,7 @@ import { MediaModule } from './media/media.module';
 import { PageModule } from './page/page.module';
 import { MailModule } from './mail/mail.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { LanguageModule } from './language/language.module';
 
 @Module({
   imports: [TypeOrmModule,
@@ -39,7 +40,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule, MailModule,MailerModule],
+    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule, MailModule,MailerModule, LanguageModule],
   controllers: [AppController],
   providers: [AppService,ConfigService],
 })
