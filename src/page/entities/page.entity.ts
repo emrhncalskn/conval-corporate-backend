@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PageConfig } from "./page_config.entity";
 import { PageComponent } from "./page_component.entity";
+import { Language } from "../../language/entities/language.entity";
 
 @Entity('page')
 export class Page {
@@ -25,6 +26,17 @@ export class Page {
 
     @Column({ nullable: true })
     config_id: number;
+
+    @Column({ nullable: true})
+    language_code: number;
+
+    @ManyToOne(() => Language, language => language.pages, { cascade: true, onDelete: "SET NULL" })
+    @JoinColumn({
+        name: 'language_code',
+        referencedColumnName: 'code',
+        foreignKeyConstraintName: 'fk_p_language_code'
+    })
+    language: Language;
 
     @OneToMany(() => PageComponent, page_component => page_component.page)
     page_component: PageComponent[];
