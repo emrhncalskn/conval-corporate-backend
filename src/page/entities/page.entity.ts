@@ -27,8 +27,8 @@ export class Page {
     @Column({ nullable: true })
     config_id: number;
 
-    @Column({ nullable: true})
-    language_code: number;
+    @Column({ nullable: true })
+    language_code: string;
 
     @ManyToOne(() => Language, language => language.pages, { cascade: true, onDelete: "SET NULL" })
     @JoinColumn({

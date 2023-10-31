@@ -14,7 +14,7 @@ export class PageDto {
     @ApiProperty()
     config_id: number;
     @ApiProperty()
-    language_code: number;
+    language_code: string;
 }
 
 export class UpdatePageDto {
@@ -31,7 +31,7 @@ export class UpdatePageDto {
     @ApiProperty()
     config_id: number;
     @ApiProperty()
-    language_code: number;
+    language_code: string;
 }
 
 export class PageConfigDto {

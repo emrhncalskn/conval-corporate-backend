@@ -14,7 +14,7 @@ export class Sliders extends BaseEntity {
     @Column({ type: 'text', nullable: true })
     simg: string;
     @Column({ nullable: true })
-    language_code: number;
+    language_code: string;
     @CreateDateColumn()
     created_at: Date;
     @UpdateDateColumn()
