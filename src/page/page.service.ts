@@ -10,6 +10,7 @@ import { PageComponent } from './entities/page_component.entity';
 import { PageConfig } from './entities/page_config.entity';
 import { ComponentDto, ComponentFileDto, ComponentTypeDto } from './dto/component.dto';
 import { Functions } from '../../services/functions/functions';
+import { Language } from 'src/language/entities/language.entity';
 
 const func = new Functions;
 
@@ -29,6 +30,8 @@ export class PageService {
         private componentFileRepository: Repository<ComponentFile>,
         @InjectRepository(ComponentType)
         private componentTypeRepository: Repository<ComponentType>,
+        @InjectRepository(Language)
+        private languageRepository: Repository<Language>,
     ) { }
 
     // Page
@@ -78,6 +81,11 @@ export class PageService {
             data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
         if (msg) return res.send({ message: msg })
 
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
+
         const components = [];
         for (let i = 0; i < data.content.length; i++) {
             const component = await this.componentRepository.findOne({ where: { id: data.content[i]['component_id'] } });
@@ -110,6 +118,11 @@ export class PageService {
         //let msg: string;
         //data.title == '' ? msg = 'Sayfa başlığı boş olamaz.' : msg = null;
         //if (msg) return res.send({ message: msg })
+
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
 
         const page = await this.pageRepository.findOne({ where: { id: page_id } });
         if (!page) return res.status(404).send({ message: 'Sayfa bulunamadı.' });

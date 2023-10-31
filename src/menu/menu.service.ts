@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateMenuDto, MenuTypeDto, UpdateMenuDto } from './dto/menu.dto';
 import { Functions } from '../../services/functions/functions';
 import { MenuType } from './entities/menu_type.entity';
+import { Language } from 'src/language/entities/language.entity';
 
 const func = new Functions;
 
@@ -15,6 +16,8 @@ export class MenuService {
         private menuRepository: Repository<Menu>,
         @InjectRepository(MenuType)
         private menuTypeRepository: Repository<MenuType>,
+        @InjectRepository(Language)
+        private languageRepository: Repository<Language>,
     ) { }
 
     async getMenu(id: number) {
@@ -104,6 +107,10 @@ export class MenuService {
     }
 
     async createMenuType(data: MenuTypeDto, res) {
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
         const newMenuType = await this.menuTypeRepository.create(data);
         const check = await this.menuTypeRepository.save(newMenuType);
         if (!check) return res.send({ message: 'Menü tipi oluşturulamadı.' });
@@ -113,6 +120,10 @@ export class MenuService {
     async setMenuType(data: MenuTypeDto, id: number, res) {
         const menutype = await this.menuTypeRepository.findOne({ where: { id: id } });
         if (!menutype) return res.send({ message: 'Menü tipi bulunamadı.' });
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
         Object.assign(menutype, data);
         const check = await this.menuTypeRepository.update(id, data);
         if (check.affected < 1) return res.send({ message: 'Menü tipi güncellenemedi.' });

@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GeneralDto } from './dto/general.dto';
-import { Images } from '../../src/media/entities/images.entity';
-import { UploadPhotoDto } from '../../src/media/dto/photo.dto';
 import { Generals } from './entities/generals.entity';
 import { Functions } from '../../services/functions/functions';
+import { Language } from 'src/language/entities/language.entity';
 
 const func = new Functions;
 
@@ -14,8 +13,8 @@ export class GeneralsService {
     constructor(
         @InjectRepository(Generals)
         private generalsRepository: Repository<Generals>,
-        @InjectRepository(Images)
-        private imagesRepository: Repository<Images>,
+        @InjectRepository(Language)
+        private languageRepository: Repository<Language>,
     ) { }
 
     async findAll(res) {
@@ -39,6 +38,10 @@ export class GeneralsService {
     async create(data: GeneralDto, res) {
         const general = await this.generalsRepository.create(data);
         if (!data.slug) { general.slug = await func.fillEmpty(data.title) }
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
         await this.generalsRepository.save(general);
         if (!general) { return res.status(400).send({ message: 'General oluşturulamadı.' }) }
         return res.status(200).send({ message: 'General oluşturuldu.', general: general });
@@ -47,6 +50,10 @@ export class GeneralsService {
     async update(generalid: number, data: GeneralDto, res) {
         const general = await this.generalsRepository.findOne({ where: { id: generalid } });
         if (!general) { return res.status(400).send({ message: 'General bulunamadı.' }) }
+        if (data.language_code) {
+            const languages = await this.languageRepository.findOne({ where: { code: data.language_code } });
+            if (!languages) return res.send({ message: 'Dil bulunamadı.' });
+        }
         Object.assign(general, data);
         if (data.title) {
             data.slug = await func.fillEmpty(data.title);
