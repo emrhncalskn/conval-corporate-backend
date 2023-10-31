@@ -9,4 +9,6 @@ export class GeneralDto {
     slug: string;
     @ApiProperty()
     img: string;
+    @ApiProperty()
+    language_code: string;
 }

@@ -8,4 +8,6 @@ export class SetSliderDto {
     @ApiProperty()
     simg: string;
     slug: string;
+    @ApiProperty()
+    language_code: number;
 }

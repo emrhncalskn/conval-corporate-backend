@@ -13,6 +13,8 @@ export class PageDto {
     content: string;
     @ApiProperty()
     config_id: number;
+    @ApiProperty()
+    language_code: number;
 }
 
 export class UpdatePageDto {
@@ -28,6 +30,8 @@ export class UpdatePageDto {
     content: string;
     @ApiProperty()
     config_id: number;
+    @ApiProperty()
+    language_code: number;
 }
 
 export class PageConfigDto {

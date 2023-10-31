@@ -19,91 +19,91 @@ export class PermissionsService {
     async create(data: PermissionDto, res) {
         const checkexist = await this.permissionsRepository.findOne({ where: { func_id: data.func_id, role_id: data.role_id } });
         if (checkexist) {
-            res.status(400).json({ message: 'Bu yetki zaten var.' }); return 400;
+            return res.status(400).json({ message: 'Bu yetki zaten var.' });
         }
         const perm = await this.permissionsRepository.create(data);
         const newPerm = await this.permissionsRepository.save(perm);
         if (newPerm) {
-            res.status(201).json({ message: 'Yeni yetki oluşturuldu.' }); return 201;
+            return res.status(201).json({ message: 'Yeni yetki oluşturuldu.' });
         }
-        res.status(400).json({ message: 'Yetki oluşturulamadı.' }); return 400;
+        return res.status(400).json({ message: 'Yetki oluşturulamadı.' });
     }
 
     async getPermissions(res) {
         const perms = await this.permissionsRepository.find({ relations: { function: true, role: true } });
         if (perms) {
-            res.status(200).json(perms); return 200;
+            return res.status(200).json(perms);
         }
-        res.status(400).json({ message: 'Yetkiler bulunamadı.' }); return 400;
+        return res.status(400).json({ message: 'Yetkiler bulunamadı.' });
     }
 
     async getPermission(permid: number, res) {
         const perm = await this.permissionsRepository.findOne({ where: { id: permid }, relations: { function: true, role: true } });
         if (perm) {
-            res.status(200).json(perm); return 200;
+            return res.status(200).json(perm);
         }
-        res.status(400).json({ message: 'Yetki bulunamadı.' }); return 400;
+        return res.status(400).json({ message: 'Yetki bulunamadı.' });
     }
 
     async setPermission(permid: number, funcId: number, roleId: number, res) {
         const perm = await this.permissionsRepository.update({ id: permid }, { func_id: funcId, role_id: roleId });
         if (perm.affected > 0) {
-            res.status(200).json({ message: 'Yetki güncellendi.' }); return 200;
+            return res.status(200).json({ message: 'Yetki güncellendi.' });
         }
-        res.status(400).json({ message: 'Yetki güncellenemedi.' }); return 400;
+        return res.status(400).json({ message: 'Yetki güncellenemedi.' });
     }
 
     async deletePermission(permid: number, res) {
         const checkexist = await this.permissionsRepository.findOne({ where: { id: permid } });
         if (!checkexist) {
-            res.status(400).json({ message: 'Bu yetki zaten yok.' }); return 400;
+            return res.status(400).json({ message: 'Bu yetki zaten yok.' });
         }
         const perm = await this.permissionsRepository.delete({ id: permid });
         if (perm.affected > 0) {
-            res.status(200).json({ message: 'Yetki silindi.' }); return 200;
+            return res.status(200).json({ message: 'Yetki silindi.' });
         }
-        res.status(400).json({ message: 'Yetki silinemedi.' }); return 400;
+        return res.status(400).json({ message: 'Yetki silinemedi.' });
     }
 
     async createRole(data: RoleDto, res) {
         const role = await this.rolesRepository.create(data);
         const newRole = await this.rolesRepository.save(role);
         if (newRole) {
-            res.status(201).json({ message: 'Yeni rol oluşturuldu.' }); return 201;
+            return res.status(201).json({ message: 'Yeni rol oluşturuldu.' });
         }
-        res.status(400).json({ message: 'Rol oluşturulamadı.' }); return 400;
+        return res.status(400).json({ message: 'Rol oluşturulamadı.' });
     }
 
     async getRoles(res) {
         const roles = await this.rolesRepository.find();
         if (roles) {
-            res.status(200).json(roles); return 200;
+            return res.status(200).json(roles);
         }
-        res.status(400).json({ message: 'Roller bulunamadı.' }); return 400;
+        return res.status(400).json({ message: 'Roller bulunamadı.' });
     }
 
     async getRole(roleid: number, res) {
         const role = await this.rolesRepository.findOne({ where: { id: roleid } });
         if (role) {
-            res.status(200).json(role); return 200;
+            return res.status(200).json(role);
         }
-        res.status(400).json({ message: 'Rol bulunamadı.' }); return 400;
+        return res.status(400).json({ message: 'Rol bulunamadı.' });
     }
 
     async setRole(roleid: number, name: string, res) {
         const role = await this.rolesRepository.update({ id: roleid }, { name: name });
         if (role.affected > 0) {
-            res.status(200).json({ message: 'Rol güncellendi.' }); return 200;
+            return res.status(200).json({ message: 'Rol güncellendi.' });
         }
-        res.status(400).json({ message: 'Rol güncellenemedi.' }); return 400;
+        return res.status(400).json({ message: 'Rol güncellenemedi.' });
     }
 
     async deleteRole(roleid: number, res) {
         const role = await this.rolesRepository.delete({ id: roleid });
         if (role.affected > 0) {
-            res.status(200).json({ message: 'Rol silindi.' }); return 200;
+            return res.status(200).json({ message: 'Rol silindi.' });
         }
-        res.status(400).json({ message: 'Rol silinemedi.' }); return 400;
+        return res.status(400).json({ message: 'Rol silinemedi.' });
     }
 
     async getFunctions(res) {
@@ -115,9 +115,24 @@ export class PermissionsService {
                     func.push(element.function);
                 }
             });
-            res.status(200).json(func); return 200;
+            return res.status(200).json(func);
         }
-        res.status(400).json({ message: 'Roller bulunamadı.' }); return 400;
+        return res.status(400).json({ message: 'Roller bulunamadı.' });
+    }
+
+    async getFunctionsByRole(roleid: number, res) {
+        const functions = await this.permissionsRepository.find({ where: { role_id: roleid }, relations: { function: true, role: true }, select: ['function'] });
+        if (functions) {
+            const func = [];
+            functions.forEach(element => {
+                if (!func.includes(element.function)) {
+                    func.push(element.function);
+                }
+            });
+            const role = functions[0].role;
+            return res.status(200).json({ role, func });
+        }
+        return res.status(400).json({ message: 'Roller bulunamadı.' });
     }
 
 }

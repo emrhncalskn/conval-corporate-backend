@@ -26,7 +26,7 @@ export class Generals {
     href: string;
 
     @Column({ nullable: true})
-    language_code: number;
+    language_code: string;
 
     @ManyToOne(() => Language, language => language.generals, { cascade: true, onDelete: "SET NULL" })
     @JoinColumn({

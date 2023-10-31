@@ -29,3 +29,12 @@ export class UpdateMenuDto {
     @ApiProperty()
     status: number;
 }
+
+export class MenuTypeDto {
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    slug: string;
+    @ApiProperty()
+    language_code: string;
+}

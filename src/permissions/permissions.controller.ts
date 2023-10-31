@@ -90,4 +90,9 @@ export class PermissionsController {
         return await this.permissionsService.getFunctions(res);
     }
 
+    @Permission(12)
+    @Get('functions/:roleid')
+    async getFunctionsByRole(@Param('roleid') roleid: number, @Res() res) {
+        return await this.permissionsService.getFunctionsByRole(roleid, res);
+    }
 }

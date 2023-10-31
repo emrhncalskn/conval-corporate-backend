@@ -32,4 +32,5 @@ export class Menu {
     @ManyToOne(() => Menu, menu_belong => menu_belong.menu, { cascade: true })
     @JoinColumn({ name: 'menu_belong_id', referencedColumnName: 'id', foreignKeyConstraintName: 'fk_m_menu_belong_id' })
     menu_belong: Menu;
+
 }

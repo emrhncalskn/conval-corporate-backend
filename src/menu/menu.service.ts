@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Menu } from './entities/menu.entity';
 import { Repository } from 'typeorm';
-import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
+import { CreateMenuDto, MenuTypeDto, UpdateMenuDto } from './dto/menu.dto';
 import { Functions } from '../../services/functions/functions';
 import { MenuType } from './entities/menu_type.entity';
 
@@ -83,6 +83,48 @@ export class MenuService {
         const check = await this.menuRepository.delete(id);
         if (!check) { return res.status(400).send('Menü silinirken hata oluştu.') }
         return res.status(200).send('Menü başarıyla silindi.')
+    }
+
+    async getMenuType(id: number) {
+        const menuType = await this.menuTypeRepository.findOne({ where: { id: id } });
+        if (!menuType) { return { message: 'Böyle bir menü tipi yok!' } }
+        return { menuType };
+    }
+
+    async getMenuTypeBySlug(slug: string) {
+        const menuType = await this.menuTypeRepository.findOne({ where: { slug: slug } });
+        if (!menuType) { return { message: 'Böyle bir menü tipi yok!' } }
+        return { menuType };
+    }
+
+    async getMenuTypes() {
+        const menuType = await this.menuTypeRepository.find();
+        if (!menuType) { return { message: 'Menü tipi yok' } }
+        return { menuType };
+    }
+
+    async createMenuType(data: MenuTypeDto, res) {
+        const newMenuType = await this.menuTypeRepository.create(data);
+        const check = await this.menuTypeRepository.save(newMenuType);
+        if (!check) return res.send({ message: 'Menü tipi oluşturulamadı.' });
+        return res.send({ message: 'Menü tipi oluşturuldu.' });
+    }
+
+    async setMenuType(data: MenuTypeDto, id: number, res) {
+        const menutype = await this.menuTypeRepository.findOne({ where: { id: id } });
+        if (!menutype) return res.send({ message: 'Menü tipi bulunamadı.' });
+        Object.assign(menutype, data);
+        const check = await this.menuTypeRepository.update(id, data);
+        if (check.affected < 1) return res.send({ message: 'Menü tipi güncellenemedi.' });
+        return res.send({ message: 'Menü tipi güncellendi.' });
+    }
+
+    async deleteMenuType(id: number, res) {
+        const menutype = await this.menuTypeRepository.findOne({ where: { id: id } });
+        if (!menutype) return res.send({ message: 'Menü tipi bulunamadı.' });
+        const check = await this.menuTypeRepository.delete(id);
+        if (check.affected < 1) return res.send({ message: 'Menü tipi silinemedi.' });
+        return res.send({ message: 'Menü tipi silindi.' });
     }
 
 }

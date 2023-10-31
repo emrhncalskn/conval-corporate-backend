@@ -4,20 +4,20 @@ import { Language } from "../../language/entities/language.entity";
 
 @Entity('menu_type')
 export class MenuType {
-    
+
     @PrimaryGeneratedColumn()
     id: number;
-    
+
     @Column()
     name: string;
-    
+
     @Column()
     slug: string;
 
-    @Column({ nullable: true})
+    @Column({ nullable: true })
     language_code: string;
 
-    @ManyToOne(() => Language, language => language.generals, { cascade: true, onDelete: "SET NULL" })
+    @ManyToOne(() => Language, language => language.generals, { cascade: true, onDelete: "SET NULL", onUpdate: 'CASCADE' })
     @JoinColumn({
         name: 'language_code',
         referencedColumnName: 'code',

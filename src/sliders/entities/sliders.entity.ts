@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Language } from "../../language/entities/language.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('sliders')
 export class Sliders extends BaseEntity {
@@ -12,9 +13,19 @@ export class Sliders extends BaseEntity {
     slug: string;
     @Column({ type: 'text', nullable: true })
     simg: string;
+    @Column({ nullable: true })
+    language_code: number;
     @CreateDateColumn()
     created_at: Date;
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(() => Language, language => language.sliders, { cascade: true, onDelete: "SET NULL" })
+    @JoinColumn({
+        name: 'language_code',
+        referencedColumnName: 'code',
+        foreignKeyConstraintName: 'fk_s_language_code'
+    })
+    language: Language;
 
 }

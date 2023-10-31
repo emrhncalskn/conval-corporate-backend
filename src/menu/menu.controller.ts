@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PassAuth } from '../../src/auth/guards/pass-auth.guard';
 import { Permission } from '../../src/permissions/decorators/permission.decorator';
 import { PermissionGuard } from '../../src/permissions/guards/permission.guard';
-import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
+import { CreateMenuDto, MenuTypeDto, UpdateMenuDto } from './dto/menu.dto';
 import { MenuService } from './menu.service';
 
 @ApiBearerAuth()
@@ -57,4 +57,41 @@ export class MenuController {
   async deleteMenu(@Param('id') id: number, @Res() res) {
     return await this.menuService.deleteMenu(id, res);
   }
+
+  @Permission()
+  @Get('type/:id')
+  async getMenuType(@Param('id') id: number) {
+    return await this.menuService.getMenuType(id);
+  }
+
+  @Permission()
+  @Get('type/byslug/:slug')
+  async getMenuTypeBySlug(@Param('slug') slug: string) {
+    return await this.menuService.getMenuTypeBySlug(slug);
+  }
+
+  @Permission()
+  @Get('types')
+  async getMenuTypes() {
+    return await this.menuService.getMenuTypes();
+  }
+
+  @Permission()
+  @Post('type/create')
+  async createMenuType(@Body() data: MenuTypeDto, @Res() res) {
+    return await this.menuService.createMenuType(data, res);
+  }
+
+  @Permission()
+  @Post('type/set/:id')
+  async setMenuType(@Body() data: MenuTypeDto, @Param('id') id: number, @Res() res) {
+    return await this.menuService.setMenuType(data, id, res);
+  }
+
+  @Permission()
+  @Post('type/delete/:id')
+  async deleteMenuType(@Param('id') id: number, @Res() res) {
+    return await this.menuService.deleteMenuType(id, res);
+  }
+
 }
