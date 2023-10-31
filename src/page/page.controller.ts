@@ -23,7 +23,8 @@ export class PageController {
     return await this.pageService.getPages(res);
   }
 
-  @Permission(55)
+  @PassAuth()
+  @Permission() //func_id: 55
   @Get('get/byslug/:slug')
   async getPageBySlug(@Param('slug') slug: string, @Res() res) {
     return await this.pageService.getPageBySlug(slug, res);
