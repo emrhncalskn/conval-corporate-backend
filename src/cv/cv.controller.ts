@@ -12,49 +12,49 @@ import { Permission } from 'src/permissions/decorators/permission.decorator';
 export class CvController {
   constructor(private readonly cvService: CvService) { }
 
-  @Permission()
+  @Permission(82)
   @Get('testimonial/:id')
   async getTestimonial(@Param('id') id: number) {
     return await this.cvService.getTestimonial(id);
   }
 
-  @Permission()
+  @Permission(83)
   @Get('testimonials')
   async getTestimonials() {
     return await this.cvService.getTestimonials();
   }
 
-  @Permission()
+  @Permission(84)
   @Get('position/:id')
   async getPosition(@Param('id') id: number) {
     return await this.cvService.getPosition(id);
   }
 
-  @Permission()
+  @Permission(85)
   @Get('positions')
   async getPositions() {
     return await this.cvService.getPositions();
   }
 
-  @Permission()
+  @Permission(86)
   @Get('references')
   async getReferences() {
     return await this.cvService.getReferences();
   }
 
-  @Permission()
+  @Permission(87)
   @Get('projects')
   async getProjects() {
     return await this.cvService.getProjects();
   }
 
-  @Permission()
+  @Permission(88)
   @Get('locations')
   async getLocations() {
     return await this.cvService.getLocations();
   }
 
-  @Permission()
+  @Permission(89)
   @Post('application')
   async createApplication(@Body() data: CreateApplicationDto, @Res() res) {
     return await this.cvService.createApplication(data, res);
