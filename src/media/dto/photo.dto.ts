@@ -8,3 +8,4 @@ export class UploadPhotoDto {
 export class PhotoDto {
     file: any;
 }
+

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { File } from "../entities/file.entity";
+import { File } from "../../file/entities/file.entity";
 import { Position } from "../entities/position.entity";
 
 @Entity('application')

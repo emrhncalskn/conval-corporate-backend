@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { File } from "../entities/file.entity";
+import { File } from "./file.entity";
 
 @Entity('file_type')
 export class FileType {

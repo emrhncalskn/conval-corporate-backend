@@ -1,11 +1,15 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { FileType } from "../entities/file_type.entity";
-import { Application } from "../entities/application.entity";
+import { FileType } from "./file_type.entity";
+import { Application } from "../../cv/entities/application.entity";
 
 @Entity('file')
 export class File {
     @PrimaryGeneratedColumn()
     id: number;
+    @Column()
+    name: string;
+    @Column()
+    alt: string;
     @Column({ type: "text" })
     url: string;
     @Column()
