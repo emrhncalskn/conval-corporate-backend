@@ -52,9 +52,25 @@ export class AppService {
   async findTableNames(res: Response): Promise<any> {
     console.log(" db_name :: " + process.env.DB_DATABASE);
     const tableNames = await this.connection.query(
-      "SELECT table_name FROM information_schema.tables WHERE table_schema ='" + process.env.DB_DATABASE + "'",
+      "SELECT table_name as 'table_name' , JSON_ARRAYAGG(JSON_OBJECT('name',column_name , 'type' , data_type)) as 'columns' from information_schema.columns WHERE table_schema ='" + process.env.DB_DATABASE + "' GROUP BY table_name",
       [process.env.DB_DATABASE] // Şema adını burada belirtin
     );
+    tableNames.forEach(element => {
+      element.columns = JSON.parse(element.columns);
+      element.columns.forEach(table_element => {
+        const type = table_element.type;
+        // Veri Kontrolü ve dönüşüm alanı
+        if(["int", "bigint", "tinyint"].includes(type)){
+          table_element.type = "number";
+        }else if(["varchar","datetime"].includes(type)){
+          table_element.type = "string";
+        }else if(["text","long"].includes(type)){
+          table_element.type = "string";
+          table_element["inputType"] = "textarea";
+        }
+        // ------------------------------
+      });
+    });
     res.status(200).json(tableNames);
     return;
   }
