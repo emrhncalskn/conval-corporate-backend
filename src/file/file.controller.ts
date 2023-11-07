@@ -2,7 +2,7 @@ import { Body, Controller, FileTypeValidator, Get, Param, ParseFilePipe, Post, U
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { FileTypeConstant } from 'constants/filetype.constant';
+import { FileTypeConstant } from 'constants/file.constant';
 import { diskStorage } from 'multer';
 import { Functions } from 'services/functions/functions';
 import { PassAuth } from 'src/auth/guards/pass-auth.guard';
@@ -10,6 +10,7 @@ import { UploadPhotoDto } from 'src/media/dto/photo.dto';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { UploadFileDto } from './dto/file.dto';
+import { FileApiOptions, FileUploadOptions } from 'assets/files/file-options/file.options';
 
 const func = new Functions;
 
@@ -28,29 +29,8 @@ export class FileController {
   @Permission()
   @Post('upload/:route')
   @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('file', {
-    limits: {
-      fileSize: 10485760,
-    },
-    storage: diskStorage({
-      destination: './assets/files/uploads/',
-      filename: (req, file, cb) => { //cb = callback
-        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-        return cb(null, `${randomName}` + '.' + `${file.mimetype.split('/')[1]}`)
-      }
-    })
-  }))
+  @ApiBody(FileApiOptions())
+  @UseInterceptors(FileInterceptor('file', FileUploadOptions()))
   async uploadFile(@Body() files: UploadFileDto, @Param('route') route: string, @UploadedFile(new ParseFilePipe({
     validators: [
       new FileTypeValidator({ fileType: FileTypeConstant.DOCUMENT })]

@@ -1,7 +1,7 @@
 import { Body, Controller, FileTypeValidator, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { FileTypeConstant } from '../../constants/filetype.constant';
+import { FileTypeConstant } from '../../constants/file.constant';
 import { diskStorage } from 'multer';
 import { Functions } from '../../services/functions/functions';
 import { Permission } from '../../src/permissions/decorators/permission.decorator';

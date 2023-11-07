@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { File } from './entities/file.entity';
 import { UploadFileDto } from './dto/file.dto';
 import { FileType } from './entities/file_type.entity';
+import { FileDestinationConstant } from 'constants/file.constant';
 
 @Injectable()
 export class FileService {
@@ -49,8 +50,8 @@ export class FileService {
         if (!findType) { return 404; }
         fileDto.type_id = findType.id;
         const file = await this.filesRepository.create(fileDto);
-        let oldPath = './assets/files/uploads' + '/' + file.name;
-        let newPath = 'assets/files/uploads'
+        let oldPath = FileDestinationConstant.OLD_PATH + file.name;
+        let newPath = FileDestinationConstant.NEW_PATH;
         if (route) {
             file.url = `${newPath}/${route}/${file.name}`;
             await this.filesRepository.save(file);
