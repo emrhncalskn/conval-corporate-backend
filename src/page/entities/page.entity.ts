@@ -17,6 +17,9 @@ export class Page {
 
     @Column({ nullable: true })
     image: string;
+    
+    @Column({ nullable: true })
+    background_image: string;
 
     @Column()
     slug: string;

@@ -8,6 +8,8 @@ export class PageDto {
     @ApiProperty()
     image: string;
     @ApiProperty()
+    background_image: string;
+    @ApiProperty()
     slug: string;
     @ApiProperty({ default: [{ component_id: 0, value: 'string', index: 0 }] })
     content: string;
@@ -24,6 +26,8 @@ export class UpdatePageDto {
     description: string;
     @ApiProperty()
     image: string;
+    @ApiProperty()
+    background_image: string;
     @ApiProperty()
     slug: string;
     @ApiProperty({ default: [{ component_id: 0, value: 'string', index: 0 }] })
