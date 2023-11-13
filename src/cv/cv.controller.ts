@@ -4,6 +4,7 @@ import { CreateApplicationDto } from './dto/create-application.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PermissionGuard } from 'src/permissions/guards/permission.guard';
 import { Permission } from 'src/permissions/decorators/permission.decorator';
+import { PassAuth } from 'src/auth/guards/pass-auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('CV')
@@ -18,7 +19,8 @@ export class CvController {
     return await this.cvService.getTestimonial(id);
   }
 
-  @Permission(83)
+  @PassAuth()
+  @Permission() // 83
   @Get('testimonials')
   async getTestimonials() {
     return await this.cvService.getTestimonials();
@@ -30,31 +32,36 @@ export class CvController {
     return await this.cvService.getPosition(id);
   }
 
-  @Permission(85)
+  @PassAuth()
+  @Permission() //85
   @Get('positions')
   async getPositions() {
     return await this.cvService.getPositions();
   }
 
-  @Permission(86)
+  @PassAuth()
+  @Permission() //86
   @Get('references')
   async getReferences() {
     return await this.cvService.getReferences();
   }
 
-  @Permission(87)
+  @PassAuth()
+  @Permission() //87
   @Get('projects')
   async getProjects() {
     return await this.cvService.getProjects();
   }
 
-  @Permission(88)
+  @PassAuth()
+  @Permission() //88
   @Get('locations')
   async getLocations() {
     return await this.cvService.getLocations();
   }
 
-  @Permission(89)
+  @PassAuth()
+  @Permission() //89
   @Post('application')
   async createApplication(@Body() data: CreateApplicationDto, @Res() res) {
     return await this.cvService.createApplication(data, res);

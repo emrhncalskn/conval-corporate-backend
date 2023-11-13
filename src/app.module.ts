@@ -42,8 +42,8 @@ import { FileModule } from './file/file.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'assets/images/uploads'),
     }),
-    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule, MailModule,MailerModule, LanguageModule, CvModule, FileModule],
+    UsersModule, BlogsModule, AuthModule, SlidersModule, PermissionsModule, GeneralsModule, MenuModule, MediaModule, PageModule, MailModule, MailerModule, LanguageModule, CvModule, FileModule],
   controllers: [AppController],
-  providers: [AppService,ConfigService],
+  providers: [AppService, ConfigService],
 })
 export class AppModule { }
