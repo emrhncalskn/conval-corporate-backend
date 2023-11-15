@@ -17,14 +17,13 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     UsersModule,
-    TypeOrmModule.forFeature([Users, Images, Roles]),
     JwtModule.register(
       {
         secret: 'c0nv4lc0rp0r4t3', // JWT için gizli anahtar
       }),
     PassportModule
   ],
-  providers: [AuthService, UsersService, LocalStrategy, JwtStrategy,
+  providers: [AuthService, LocalStrategy, JwtStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtGuard,

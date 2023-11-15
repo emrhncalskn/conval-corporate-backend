@@ -16,6 +16,7 @@ import { Roles } from '../../src/permissions/entities/roles.entity';
   TypeOrmModule.forFeature([Users, Images, Permissions, Roles]),
   ],
   providers: [UsersService, JwtService],
-  controllers: [UsersController]
+  controllers: [UsersController],
+  exports: [UsersService]
 })
 export class UsersModule { }
