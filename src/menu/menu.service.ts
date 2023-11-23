@@ -18,7 +18,7 @@ export class MenuService {
     private menuTypeRepository: Repository<MenuType>,
     @InjectRepository(Language)
     private languageRepository: Repository<Language>,
-  ) {}
+  ) { }
 
   async getMenu(id: number) {
     const menu = await this.menuRepository.findOne({ where: { id: id } });
@@ -106,11 +106,15 @@ export class MenuService {
     if (!menu) {
       return res.status(400).send('Menü bulunamadı.');
     }
-    if (menu.menu_belong_id) {
+
+    const hasSubMenu = await this.menuRepository.find({ where: { menu_belong_id: id } });
+
+    if (hasSubMenu.length > 0) {
       return res
         .status(400)
         .send('Bu menüye ait alt menüler var. Önce onları silmelisiniz.');
     }
+
     const check = await this.menuRepository.delete(id);
     if (!check) {
       return res.status(400).send('Menü silinirken hata oluştu.');
